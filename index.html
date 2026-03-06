@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AquariuOS — Architecture for Shared Reality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #080f18;
+    --mist:      #0b1520;
+    --teal:      #4ecdc4;
+    --gold:      #c9a84c;
+    --gold-light:#e2c47a;
+    --white:     #f4f0e8;
+    --pale:      #ccc8be;
+    --silver:    #8a9ab0;
+    --slate:     #4a5568;
+    --serif:     'Cormorant Garamond', Georgia, serif;
+    --sans:      'Outfit', sans-serif;
+    --mono:      'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--pale);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── STARFIELD ─── */
+  #starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  #starfield canvas { width: 100%; height: 100%; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: rgba(8,15,24,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-logo span { font-style: italic; color: var(--silver); font-size: 0.85rem; }
+  .nav-right { display: flex; gap: 1rem; align-items: center; }
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 0.5rem 1.1rem;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 6rem;
+  }
+  .hero-overline {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub {
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    color: var(--silver);
+    max-width: 540px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-sub strong { color: var(--pale); font-weight: 400; }
+  .hero-disclaimer {
+    font-size: 0.82rem;
+    color: var(--slate);
+    max-width: 480px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 1.2rem 0;
+    font-style: italic;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary {
+    font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--gold); color: var(--ink);
+    padding: 0.85rem 2rem; border-radius: 2px;
+    text-decoration: none; font-weight: 400;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-ghost {
+    font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.2); color: var(--pale);
+    padding: 0.85rem 2rem; border-radius: 2px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--pale); color: var(--white); }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em;
+    color: var(--slate); text-transform: uppercase;
+    opacity: 0; animation: fadeUp 0.8s 1.2s forwards;
+  }
+  .hero-scroll::after {
+    content: ''; display: block; width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--slate), transparent);
+    margin: 0.5rem auto 0;
+  }
+
+  /* ─── REALITY CHECK CARD ─── */
+  .rc-card {
+    margin-top: 2.5rem;
+    max-width: 560px;
+    width: 100%;
+    opacity: 0; animation: fadeUp 0.7s 1s forwards;
+  }
+  .rc-card-inner {
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 4px;
+    padding: 1.6rem 2rem;
+    background: rgba(201,168,76,0.05);
+    text-align: left;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .rc-card-inner:hover {
+    background: rgba(201,168,76,0.09);
+    border-color: rgba(201,168,76,0.55);
+  }
+  .rc-label {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 0.45rem;
+  }
+  .rc-title {
+    font-family: var(--serif); font-size: 1.45rem;
+    font-weight: 300; color: var(--white);
+    margin-bottom: 0.5rem; line-height: 1.2;
+  }
+  .rc-sub {
+    font-size: 0.82rem; color: var(--silver);
+    line-height: 1.7; margin-bottom: 1.1rem;
+  }
+  .rc-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .rc-btn-primary {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--gold); color: var(--ink);
+    padding: 0.6rem 1.3rem; border-radius: 2px;
+    text-decoration: none; font-weight: 500;
+    transition: background 0.2s;
+  }
+  .rc-btn-primary:hover { background: var(--gold-light); }
+  .rc-btn-ghost {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.2); color: var(--pale);
+    padding: 0.6rem 1.3rem; border-radius: 2px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .rc-btn-ghost:hover { border-color: var(--pale); color: var(--white); }
+
+  /* ─── SECTION SHARED ─── */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+  .section-label {
+    font-family: var(--mono); font-size: 0.63rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal); text-align: center; margin-bottom: 1rem;
+  }
+  .section-heading {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300; color: var(--white);
+    text-align: center; margin-bottom: 0.8rem; line-height: 1.2;
+  }
+  .section-heading em { font-style: italic; color: var(--gold-light); }
+  .section-sub {
+    text-align: center; color: var(--silver); font-size: 0.92rem;
+    max-width: 500px; margin: 0 auto 4rem; line-height: 1.75;
+  }
+
+  /* ─── MOMENTS ─── */
+  #moments { position: relative; z-index: 1; padding: 6rem 0; }
+  .moment-list {
+    display: flex; flex-direction: column;
+    gap: 1.5px; background: rgba(255,255,255,0.04);
+  }
+  .moment {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 300px; background: var(--mist);
+    transition: background 0.3s;
+  }
+  .moment:hover { background: #0e1e2d; }
+  .moment.flip { direction: rtl; }
+  .moment.flip > * { direction: ltr; }
+  .moment-image { overflow: hidden; }
+  .moment-image img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: brightness(0.85);
+    transition: filter 0.4s, transform 0.4s;
+  }
+  .moment:hover .moment-image img { filter: brightness(1); transform: scale(1.02); }
+  .moment-content {
+    padding: 3rem 3.5rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .moment-number {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.2em; color: var(--teal); margin-bottom: 1.2rem;
+  }
+  .moment-trigger {
+    font-family: var(--serif); font-size: 1.55rem;
+    font-weight: 300; color: var(--white);
+    line-height: 1.3; margin-bottom: 1rem;
+  }
+  .moment-trigger em { font-style: italic; color: var(--gold-light); }
+  .moment-body {
+    font-size: 0.88rem; color: var(--silver);
+    line-height: 1.8; margin-bottom: 1.2rem; flex: 1;
+  }
+  .moment-tag {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    padding-top: 0.8rem; align-self: flex-start;
+  }
+
+  /* ─── VIDEO PLACEHOLDER ─── */
+  #video { position: relative; z-index: 1; padding: 7rem 0; background: var(--mist); text-align: center; }
+  .video-frame {
+    max-width: 720px; margin: 3rem auto 0;
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
+    overflow: hidden; background: #060d14;
+    aspect-ratio: 16/9;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1rem;
+  }
+  .video-play {
+    width: 64px; height: 64px; border-radius: 50%;
+    border: 2px solid rgba(201,168,76,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; color: var(--gold);
+  }
+  .video-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--slate);
+  }
+  .video-sub { font-size: 0.8rem; color: var(--slate); }
+
+  /* ─── BRIDGE ─── */
+  #bridge {
+    position: relative; z-index: 1;
+    padding: 7rem 0; text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .bridge-heading {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 300; color: var(--white);
+    margin-bottom: 1rem; line-height: 1.3;
+  }
+  .bridge-heading em { font-style: italic; color: var(--gold-light); }
+  .bridge-body {
+    font-size: 0.92rem; color: var(--silver);
+    max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.75;
+  }
+  .bridge-actions {
+    display: flex; gap: 1rem; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 2.5rem;
+  }
+  .bridge-socials {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.08em; color: var(--slate);
+    display: flex; gap: 1.2rem; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .bridge-socials a {
+    color: var(--silver); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .bridge-socials a:hover { color: var(--gold); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative; z-index: 1;
+    padding: 2rem 3rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-left { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--slate); }
+  .footer-links { list-style: none; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--slate); text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .moment { grid-template-columns: 1fr; min-height: auto; }
+    .moment.flip { direction: ltr; }
+    .moment-image { height: 220px; }
+    .moment-content { padding: 2rem 1.5rem; }
+    footer { flex-direction: column; padding: 2rem 1.5rem; }
+  }
+
+  /* ── COMPACT ASK WIDGET ── */
+  .ask-widget-section {
+    background: var(--ink, #080f18);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 4rem 2rem 5rem;
+  }
+  .ask-widget-inner {
+    max-width: 680px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .ask-widget-hd { margin-bottom: 1.2rem; }
+  .ask-widget-label {
+    font-family: var(--mono, monospace); font-size: 0.55rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal, #4ecdc4); display: block; margin-bottom: 0.4rem;
+  }
+  .ask-widget-title {
+    font-family: var(--serif, Georgia, serif); font-size: 1.6rem;
+    font-weight: 300; color: var(--white, #f4f0e8); margin-bottom: 0.3rem;
+  }
+  .ask-widget-sub {
+    font-size: 0.85rem; color: var(--silver, #9aa3ad); line-height: 1.6;
+  }
+  .ask-widget-suggestions {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem;
+  }
+  .aw-sugg {
+    font-family: var(--mono, monospace); font-size: 0.56rem;
+    letter-spacing: 0.05em; padding: 0.35rem 0.75rem;
+    background: transparent; border: 1px solid rgba(78,205,196,0.2);
+    border-radius: 20px; color: var(--silver, #9aa3ad);
+    cursor: pointer; transition: all 0.18s;
+  }
+  .aw-sugg:hover { border-color: #4ecdc4; color: #4ecdc4; background: rgba(78,205,196,0.05); }
+  .ask-widget-messages {
+    min-height: 80px; max-height: 320px; overflow-y: auto;
+    background: var(--mist, #0d1a26); border: 1px solid rgba(255,255,255,0.07);
+    border-bottom: none; border-radius: 10px 10px 0 0;
+    padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.9rem;
+    scroll-behavior: smooth;
+  }
+  .ask-widget-messages::-webkit-scrollbar { width: 3px; }
+  .ask-widget-messages::-webkit-scrollbar-thumb { background: var(--slate, #4a5568); border-radius: 3px; }
+  .aw-empty {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.5rem 0;
+  }
+  .aw-empty-glyph { font-size: 1rem; opacity: 0.2; color: var(--teal, #4ecdc4); }
+  .aw-empty-txt {
+    font-size: 0.78rem; color: var(--slate, #4a5568); font-style: italic;
+  }
+  .aw-msg { display: flex; gap: 0.6rem; align-items: flex-start; }
+  .aw-msg.user { flex-direction: row-reverse; }
+  .aw-av {
+    width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono, monospace); font-size: 0.42rem; margin-top: 2px;
+  }
+  .aw-msg.assistant .aw-av { background: rgba(78,205,196,0.12); border: 1px solid rgba(78,205,196,0.25); color: #4ecdc4; }
+  .aw-msg.user      .aw-av { background: rgba(201,168,76,0.1);  border: 1px solid rgba(201,168,76,0.22); color: #c9a84c; }
+  .aw-bubble {
+    max-width: 88%; padding: 0.65rem 0.9rem; border-radius: 8px;
+    font-size: 0.84rem; line-height: 1.65;
+  }
+  .aw-msg.assistant .aw-bubble {
+    background: var(--deep, #111f2e); border: 1px solid rgba(255,255,255,0.07);
+    color: var(--pale, #ddd8ce); border-radius: 3px 8px 8px 8px;
+  }
+  .aw-msg.user .aw-bubble {
+    background: rgba(201,168,76,0.07); border: 1px solid rgba(201,168,76,0.18);
+    color: var(--pale, #ddd8ce); border-radius: 8px 3px 8px 8px;
+  }
+  .aw-bubble p { margin-bottom: 0.4rem; }
+  .aw-bubble p:last-child { margin-bottom: 0; }
+  .aw-bubble strong { color: var(--white, #f4f0e8); font-weight: 400; }
+  .aw-typing { display: none; }
+  .aw-typing.show { display: flex; }
+  .aw-dots { display: flex; gap: 3px; align-items: center; padding: 0.3rem 0; }
+  .aw-dot { width: 5px; height: 5px; border-radius: 50%; background: #4ecdc4; opacity: 0.3; animation: awPulse 1.2s infinite; }
+  .aw-dot:nth-child(2) { animation-delay: 0.2s; }
+  .aw-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes awPulse { 0%,60%,100%{opacity:0.3;transform:scale(1)} 30%{opacity:1;transform:scale(1.3)} }
+  .ask-widget-input-wrap {
+    display: flex; gap: 0.5rem; align-items: flex-end;
+    padding: 0.8rem 1rem;
+    background: var(--mist, #0d1a26);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    border-radius: 0 0 10px 10px;
+  }
+  .aw-input {
+    flex: 1; background: var(--deep, #111f2e);
+    border: 1px solid rgba(255,255,255,0.07); border-radius: 7px;
+    padding: 0.6rem 0.85rem; color: var(--white, #f4f0e8);
+    font-family: var(--sans, sans-serif); font-size: 0.86rem;
+    font-weight: 300; line-height: 1.5; resize: none;
+    outline: none; min-height: 38px; max-height: 110px;
+    transition: border-color 0.2s;
+  }
+  .aw-input:focus { border-color: rgba(78,205,196,0.35); }
+  .aw-input::placeholder { color: var(--slate, #4a5568); }
+  .aw-send {
+    width: 38px; height: 38px; flex-shrink: 0;
+    background: #4ecdc4; color: #080f18; border: none;
+    border-radius: 7px; font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .aw-send:hover { background: #3ab5ac; }
+  .aw-send:disabled { background: var(--slate, #4a5568); opacity: 0.4; cursor: not-allowed; }
+  .aw-error {
+    font-family: var(--mono, monospace); font-size: 0.58rem;
+    color: #e06c6c; padding: 0.4rem 0.8rem;
+    background: rgba(224,108,108,0.07); border: 1px solid rgba(224,108,108,0.18);
+    border-radius: 5px; margin-top: 0.35rem; display: none;
+  }
+  .aw-error.show { display: block; }
+  .aw-foot {
+    margin-top: 0.75rem; text-align: right;
+    font-family: var(--mono, monospace); font-size: 0.52rem;
+    letter-spacing: 0.08em;
+  }
+  .aw-foot a { color: var(--silver, #9aa3ad); text-decoration: none; border-bottom: 1px solid rgba(154,163,173,0.3); transition: color 0.15s; }
+  .aw-foot a:hover { color: #4ecdc4; }
+
+  </style>
+</head>
+<body>
+
+<div id="starfield"></div>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="nav-logo">AquariuOS <span>/ Project 2222</span></a>
+  <div class="nav-right">
+    <a href="aquariuos.html" class="nav-cta">Full Architecture →</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-overline">Project 2222 &nbsp;·&nbsp; Alpha Version 1.03 &nbsp;·&nbsp; Released February 2026</div>
+  <h1>What if truth<br>was <em>verifiable?</em></h1>
+  <p class="hero-sub">
+    We've all been in moments where we knew what happened — and had no way to prove it.
+    <strong>AquariuOS is infrastructure for those moments.</strong>
+    Built for the age when "I never said that" became structurally unprovable.
+  </p>
+  <p class="hero-disclaimer">
+    AquariuOS is not a company. There is nothing for sale here. This is a public architectural proposal — a detailed answer to one question: if we were going to build the truth infrastructure civilization actually needs, what would it have to look like? It is published openly to be read, challenged, improved, and built. This project began with one author — and is an open invitation for co-authorship. The blueprint is open. What gets built from it is up to all of us.
+  </p>
+  <div class="hero-actions">
+    <a href="#moments" class="btn-primary">See How It Works</a>
+    <a href="AquariuOS_Alpha_V1_03_0227.pdf" download class="btn-ghost">Download the Document</a>
+  </div>
+
+  <!-- ─── REALITY CHECK CARD ─── -->
+  <div class="rc-card">
+    <div class="rc-card-inner">
+      <div class="rc-label">Try This Now · No Tech Needed</div>
+      <div class="rc-title">5-Minute Reality Check</div>
+      <div class="rc-sub">Reduce gaslighting, confusion, or stress in 5–10 minutes. Pen &amp; paper only. This is the simplest seed of AquariuOS — try it once and see if it creates breathing room.</div>
+      <div class="rc-actions">
+        <a href="reality-check.html" class="rc-btn-primary">Begin the Check →</a>
+        <a href="reality-check.pdf" download class="rc-btn-ghost">Printable PDF ↓</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ─── MOMENTS ─── -->
+<section id="moments">
+  <div class="container">
+    <div class="section-label">Real Situations</div>
+    <h2 class="section-heading">The moments this was <em>built for</em></h2>
+    <p class="section-sub">Not a tech platform. Not an app. Infrastructure — for the moments that actually matter in your life.</p>
+
+    <div class="moment-list">
+
+      <div class="moment">
+        <div class="moment-image"><img src="AquariuOSDailyLife_FamilyFriends1.jpg" alt="Family"></div>
+        <div class="moment-content">
+          <div class="moment-number">01 — Daily Life</div>
+          <div class="moment-trigger">"That's not<br>what <em>happened.</em>"</div>
+          <p class="moment-body">Two people. One memory. No proof. AquariuOS doesn't pick sides — it keeps an accurate record of what was actually said, when, and in what context. The argument becomes a conversation again.</p>
+          <div class="moment-tag">SharedReality · Memory as Infrastructure</div>
+        </div>
+      </div>
+
+      <div class="moment flip">
+        <div class="moment-image"><img src="AquariuOSDailyLifeDomesticAbusePattern.jpg" alt="Safety"></div>
+        <div class="moment-content">
+          <div class="moment-number">02 — Safety</div>
+          <div class="moment-trigger">"It's not that bad.<br>It was <em>just once.</em>"</div>
+          <p class="moment-body">Abuse doesn't announce itself. It accumulates — each incident small enough to dismiss, until the pattern is undeniable. AquariuOS makes that pattern visible. Not to judge. To let you finally see what you've been feeling.</p>
+          <div class="moment-tag">Pattern Recognition · Survivable Accountability</div>
+        </div>
+      </div>
+
+      <div class="moment">
+        <div class="moment-image"><img src="AquariuOSDailyLifeFalseAccusation1.jpg" alt="False accusation"></div>
+        <div class="moment-content">
+          <div class="moment-number">03 — Accountability</div>
+          <div class="moment-trigger">"I didn't do it.<br>But I can't <em>prove</em> it."</div>
+          <p class="moment-body">A false accusation can end a career before anyone checks the facts. AquariuOS anchors the structure of what actually happened — making the timeline coherent and inconsistencies visible to anyone looking clearly.</p>
+          <div class="moment-tag">Provenance · Defense Through Data</div>
+        </div>
+      </div>
+
+      <div class="moment flip">
+        <div class="moment-image"><img src="MemoryMontageForRomance.jpg" alt="Relationships"></div>
+        <div class="moment-content">
+          <div class="moment-number">04 — Relationships</div>
+          <div class="moment-trigger">"I feel like we've<br><em>lost each other.</em>"</div>
+          <p class="moment-body">Relationships don't break all at once. They drift through small moments gone unnoticed. The Memory Room preserves what's going right — so when things are hard, you can remember what drew you together. Not nostalgia. Nourishment.</p>
+          <div class="moment-tag">Memory Room · The Relationship Engine</div>
+        </div>
+      </div>
+
+      <div class="moment">
+        <div class="moment-image"><img src="JusticeTestimony.png" alt="Justice - being believed"></div>
+        <div class="moment-content">
+          <div class="moment-number">05 — Justice</div>
+          <div class="moment-trigger">"I know what happened.<br><em>Nobody believes me.</em>"</div>
+          <p class="moment-body">When memory is contested, justice becomes a contest of rhetoric. AquariuOS transforms the courtroom into a space where truth can be shown, not just argued. Multi-perspective records. Immutable timelines. Evidence that can't be retroactively edited.</p>
+          <div class="moment-tag">Forensic Mosaic · SharedReality in Court</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── BRIDGE ─── -->
+<section id="bridge">
+  <div class="container">
+    <h2 class="bridge-heading">Ready to go <em>deeper?</em></h2>
+    <p class="bridge-body">The full architecture — all ten systems, governance design, constitutional covenants, known vulnerabilities, and open questions. Built in public. Designed to be stress-tested.</p>
+    <div class="bridge-actions">
+      <a href="aquariuos.html" class="btn-primary">Explore the Full Architecture →</a>
+      <a href="AquariuOS_Alpha_V1_03_0227.pdf" download class="btn-ghost">Download Alpha V1.03</a>
+    </div>
+    <div class="bridge-socials">
+      <a href="https://www.reddit.com/r/AquariuOS/" target="_blank">r/AquariuOS</a>
+      <a href="https://x.com/TheProject2222" target="_blank">X / Twitter</a>
+      <a href="https://www.instagram.com/project2222aquariuos/" target="_blank">Instagram</a>
+      <a href="https://www.threads.com/@aquariuosity" target="_blank">Threads</a>
+      <a href="https://www.facebook.com/profile.php?id=61586947435505" target="_blank">Facebook</a>
+      <a href="https://github.com/Beargoat/AquariuOS" target="_blank">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VIDEO ─── -->
+<section id="video">
+  <div class="container">
+    <div class="section-label">A Short Film · Coming Soon</div>
+    <h2 class="section-heading">See it in <em>two minutes</em></h2>
+    <p class="section-sub">A short film showing AquariuOS in a real moment — what it looks like when truth has somewhere to live. Notify me when it's live via the contact form on the full site.</p>
+    <div class="video-frame">
+      <div class="video-play">▶</div>
+      <div class="video-label">2-Minute Overview · In Production</div>
+      <div class="video-sub">Follow on social or join the community to be notified</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+
+<!-- ══════════ COMPACT ASK WIDGET ══════════ -->
+<section class="ask-widget-section">
+  <div class="ask-widget-inner">
+    <div class="ask-widget-hd">
+      <span class="ask-widget-label">Ask Anything · Powered by Claude</span>
+      <h3 class="ask-widget-title">Still have questions?</h3>
+      <p class="ask-widget-sub">This assistant knows the full AquariuOS architecture. Ask about the vision, the Reality Check, specific use cases, or anything else.</p>
+    </div>
+    <div class="ask-widget-suggestions" id="aw-suggestions">
+      <button class="aw-sugg" onclick="awAsk(this)">What is AquariuOS?</button>
+      <button class="aw-sugg" onclick="awAsk(this)">How does the Reality Check work?</button>
+      <button class="aw-sugg" onclick="awAsk(this)">Can this help with a custody dispute?</button>
+      <button class="aw-sugg" onclick="awAsk(this)">Is this a company?</button>
+    </div>
+    <div class="ask-widget-messages" id="aw-messages">
+      <div class="aw-empty" id="aw-empty">
+        <span class="aw-empty-glyph">◎</span>
+        <span class="aw-empty-txt">Tap a question above or type your own</span>
+      </div>
+    </div>
+    <div class="ask-widget-input-wrap">
+      <textarea class="aw-input" id="aw-input" rows="1"
+        placeholder="Ask anything about AquariuOS..."
+        onkeydown="awKey(event)" oninput="awResize(this)"></textarea>
+      <button class="aw-send" id="aw-send" onclick="awSend()">↑</button>
+    </div>
+    <div class="aw-error" id="aw-error"></div>
+    <div class="aw-foot"><a href="/ask">Open full conversation →</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">AquariuOS · Project 2222 · Alpha V1.03 · Released February 2026</div>
+  <ul class="footer-links">
+    <li><a href="aquariuos.html">Full Architecture</a></li>
+    <li><a href="https://github.com/Beargoat/AquariuOS" target="_blank">GitHub</a></li>
+    <li><a href="AquariuOS_Alpha_V1_03_0227.pdf" download>Download PDF</a></li>
+  </ul>
+</footer>
+
+<script>
+  // ─── STARFIELD ───
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  document.getElementById('starfield').appendChild(canvas);
+  let stars = [];
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  function init() {
+    stars = [];
+    for (let i = 0; i < 140; i++) {
+      stars.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+        r: Math.random()*1.2, o: Math.random()*0.5+0.1, s: Math.random()*0.003+0.001 });
+    }
+  }
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      s.o += s.s; if (s.o>0.6||s.o<0.1) s.s=-s.s;
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(200,210,230,${s.o})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{ resize(); init(); });
+  resize(); init(); draw();
+
+// ── COMPACT ASK WIDGET ──
+(function(){
+  var awHistory = [];
+  var awLoading = false;
+
+  window.awResize = function(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+  };
+  window.awKey = function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); awSend(); }
+  };
+  window.awAsk = function(btn) {
+    document.getElementById('aw-input').value = btn.textContent;
+    var s = document.getElementById('aw-suggestions');
+    if (s) s.style.display = 'none';
+    awSend();
+  };
+
+  function awFmt(text) {
+    return text.split('\n\n').filter(function(p){ return p.trim(); }).map(function(p){
+      return '<p>' + p
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\n/g, '<br>') + '</p>';
+    }).join('');
+  }
+
+  function awAddMsg(role, content) {
+    var c = document.getElementById('aw-messages');
+    var e = document.getElementById('aw-empty');
+    if (e) e.remove();
+    var t = document.getElementById('aw-typing');
+    if (t) t.remove();
+    var av = role === 'assistant' ? 'AQ' : 'YOU';
+    var el = document.createElement('div');
+    el.className = 'aw-msg ' + role;
+    el.innerHTML = '<div class="aw-av">' + av + '</div><div class="aw-bubble">' + awFmt(content) + '</div>';
+    c.appendChild(el);
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function awShowTyping() {
+    var c = document.getElementById('aw-messages');
+    var e = document.getElementById('aw-empty');
+    if (e) e.remove();
+    var el = document.createElement('div');
+    el.id = 'aw-typing'; el.className = 'aw-msg assistant aw-typing show';
+    el.innerHTML = '<div class="aw-av">AQ</div><div class="aw-dots"><div class="aw-dot"></div><div class="aw-dot"></div><div class="aw-dot"></div></div>';
+    c.appendChild(el); c.scrollTop = c.scrollHeight;
+  }
+
+  function awSetErr(msg) {
+    var el = document.getElementById('aw-error');
+    if (!el) return;
+    if (msg) { el.textContent = msg; el.classList.add('show'); }
+    else el.classList.remove('show');
+  }
+
+  window.awSend = async function() {
+    if (awLoading) return;
+    var input = document.getElementById('aw-input');
+    var text = (input.value || '').trim();
+    if (!text) return;
+    awSetErr('');
+    input.value = ''; input.style.height = '';
+    var btn = document.getElementById('aw-send');
+    if (btn) btn.disabled = true;
+    awLoading = true;
+    awAddMsg('user', text);
+    awHistory.push({ role: 'user', content: text });
+    awShowTyping();
+    try {
+      var res = await fetch('/.netlify/functions/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: awHistory }),
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed');
+      awAddMsg('assistant', data.reply);
+      awHistory.push({ role: 'assistant', content: data.reply });
+    } catch(err) {
+      var t = document.getElementById('aw-typing'); if (t) t.remove();
+      awSetErr(err.message || 'Something went wrong. Please try again.');
+      awHistory.pop();
+      input.value = text;
+    } finally {
+      awLoading = false;
+      var b = document.getElementById('aw-send'); if (b) b.disabled = false;
+    }
+  };
+})();
+
+</script>
+</body>
+</html>

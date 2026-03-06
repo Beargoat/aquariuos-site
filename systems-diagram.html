@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AquariuOS System Diagram — Project 2222</title>
+<meta name="description" content="The full structural and governance architecture of AquariuOS. Constitutional Foundation: Six-Field Coherence Markers enable all domains to track truth as signal or shape rather than verdict.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #080f18;
+    --mist:      #0b1520;
+    --teal:      #4ecdc4;
+    --gold:      #c9a84c;
+    --gold-light:#e2c47a;
+    --white:     #f4f0e8;
+    --pale:      #ccc8be;
+    --silver:    #8a9ab0;
+    --slate:     #4a5568;
+    --serif:     'Cormorant Garamond', Georgia, serif;
+    --sans:      'Outfit', sans-serif;
+    --mono:      'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--ink);
+    color: var(--pale);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: rgba(8,15,24,0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-logo {
+    font-family: var(--serif); font-size: 1.1rem;
+    color: var(--white); text-decoration: none;
+  }
+  .nav-logo span { font-style: italic; color: var(--silver); font-size: 0.85rem; }
+  .nav-links { display: flex; gap: 1.2rem; align-items: center; }
+  .nav-link {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--silver); text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--gold); }
+  .nav-cta {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 0.45rem 1rem; border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+  /* ─── HEADER ─── */
+  .page-header {
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background: linear-gradient(180deg, #0a1525 0%, var(--ink) 100%);
+  }
+  .page-label {
+    font-family: var(--mono); font-size: 0.63rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1rem;
+  }
+  .page-title {
+    font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300; color: var(--white);
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .page-title em { font-style: italic; color: var(--gold-light); }
+  .page-sub {
+    font-size: 0.92rem; color: var(--silver);
+    max-width: 600px; margin: 0 auto 2rem;
+    line-height: 1.75;
+  }
+  .page-ref {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; color: var(--slate);
+  }
+
+  /* ─── DIAGRAM SECTION ─── */
+  .diagram-section {
+    padding: 4rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .diagram-label {
+    font-family: var(--mono); font-size: 0.63rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  /* ─── MAIN IMAGE ─── */
+  .diagram-frame {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    cursor: zoom-in;
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  .diagram-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s;
+  }
+  .diagram-frame:hover img { transform: scale(1.01); }
+  .diagram-caption {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.08em; color: var(--slate);
+    text-align: center; margin-bottom: 2.5rem;
+  }
+
+  /* ─── DOWNLOAD BUTTONS ─── */
+  .download-row {
+    display: flex; gap: 1rem; justify-content: center;
+    flex-wrap: wrap; margin: 2rem 0 4rem;
+  }
+  .btn-primary {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    background: var(--gold); color: var(--ink);
+    padding: 0.8rem 1.8rem; border-radius: 2px;
+    text-decoration: none; font-weight: 400;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-ghost {
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.2); color: var(--pale);
+    padding: 0.8rem 1.8rem; border-radius: 2px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--pale); color: var(--white); }
+
+  /* ─── EXPLAINER ─── */
+  .explainer {
+    max-width: 800px; margin: 0 auto;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 3rem;
+  }
+  .explainer-heading {
+    font-family: var(--serif); font-size: 1.8rem;
+    font-weight: 300; color: var(--white);
+    margin-bottom: 1rem; line-height: 1.3;
+  }
+  .explainer-heading em { font-style: italic; color: var(--gold-light); }
+  .explainer p {
+    font-size: 0.9rem; color: var(--silver);
+    line-height: 1.85; margin-bottom: 1.2rem;
+  }
+  .explainer strong { color: var(--pale); font-weight: 400; }
+
+  /* ─── KEY CONCEPTS ─── */
+  .concepts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.04);
+    margin: 3rem 0;
+  }
+  .concept {
+    background: var(--mist);
+    padding: 1.8rem;
+    transition: background 0.2s;
+  }
+  .concept:hover { background: #0e1e2d; }
+  .concept-color {
+    width: 12px; height: 12px; border-radius: 50%;
+    margin-bottom: 0.8rem;
+  }
+  .concept-name {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--pale); margin-bottom: 0.5rem;
+  }
+  .concept-desc {
+    font-size: 0.82rem; color: var(--silver); line-height: 1.6;
+  }
+
+  /* ─── LIGHTBOX ─── */
+  .lightbox {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 1000; cursor: zoom-out;
+    align-items: center; justify-content: center;
+    padding: 2rem;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox img {
+    max-width: 100%; max-height: 100vh;
+    object-fit: contain; border-radius: 2px;
+  }
+  .lightbox-close {
+    position: fixed; top: 1.5rem; right: 1.5rem;
+    font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--silver); cursor: pointer;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.5rem 1rem; border-radius: 2px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 2rem 3rem;
+    display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-left { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--slate); }
+  .footer-links { list-style: none; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--slate); text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .page-header { padding: 4rem 1.5rem 2.5rem; }
+    .diagram-section { padding: 3rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="index.html" class="nav-logo">AquariuOS <span>/ Project 2222</span></a>
+  <div class="nav-links">
+    <a href="aquariuos.html" class="nav-link">Full Architecture</a>
+    <a href="immune-system-diagram.html" class="nav-link">Immune System</a>
+    <a href="AquariuOS_Alpha_V1_03_0227.pdf" download class="nav-cta">Download PDF</a>
+  </div>
+</nav>
+
+<!-- ─── HEADER ─── -->
+<div class="page-header">
+  <div class="page-label">Chapter 9 · Reference Diagram</div>
+  <h1 class="page-title">The AquariuOS <em>System Diagram</em></h1>
+  <p class="page-sub">The full structural and governance architecture of AquariuOS. All domains operate on a shared constitutional foundation: the Coherence Marker protocol, which defines six fields for tracking misalignment without judgment and one invariant protecting the right to reframe.</p>
+  <div class="page-ref">Alpha Version 1.03 · Project 2222 · aquariuos.com/systems-diagram</div>
+</div>
+
+<!-- ─── DIAGRAM ─── -->
+<div class="diagram-section">
+  <div class="diagram-label">Click to expand full resolution</div>
+
+  <div class="diagram-frame" onclick="openLightbox()">
+    <img src="AquariuOS_System_Diagram.jpg" alt="The AquariuOS System Diagram — Full Structural and Governance Architecture">
+  </div>
+  <p class="diagram-caption">The AquariuOS System · Constitutional Foundation: Six-Field Coherence Markers · Click to expand</p>
+
+  <div class="download-row">
+    <a href="AquariuOS_System_Diagram.jpg" download class="btn-primary">Download JPG</a>
+    <a href="Project_2222_AquariuOS_Systems_Diagram.pdf" download class="btn-ghost">Download High-Resolution PDF</a>
+    <a href="aquariuos.html#systems" class="btn-ghost">View in Full Architecture →</a>
+  </div>
+
+  <!-- ─── EXPLAINER ─── -->
+  <div class="explainer">
+    <h2 class="explainer-heading">How to read <em>this diagram</em></h2>
+    <p>The AquariuOS system operates as an ecology of interdependent domains, each serving a distinct area of human experience, none standing alone. At the center are the users — the democratic electorate, the ultimate source of authority in the system. Around them, ten domain networks handle everything from fact verification to ecological stewardship to personal spiritual growth.</p>
+    <p>Above the domains sits the <strong>Oversight Commons</strong> — the dynamic governance layer where councils deliberate, flags are reviewed, and accountability is exercised. Above that, operating from outside the system's internal incentive structures, is <strong>The Witness</strong> — the AI orbital perspective that monitors for systemic integrity threats without executive power to act on what it sees.</p>
+    <p>On the outer ring, the <strong>Lunar Constellation</strong> provides federated external observation — labor organizations, religious institutions, science bodies, shadow moons — each watching the same events through their distinct frames, ensuring no single interpretation dominates.</p>
+
+    <!-- ─── COLOR KEY ─── -->
+    <div class="concepts">
+      <div class="concept">
+        <div class="concept-color" style="background:#b5c85a;"></div>
+        <div class="concept-name">Yellow — Governance</div>
+        <div class="concept-desc">Oversight and accountability layers. The councils, the commons, the democratic checks on power.</div>
+      </div>
+      <div class="concept">
+        <div class="concept-color" style="background:#4ecdc4;"></div>
+        <div class="concept-name">Green — Empirical</div>
+        <div class="concept-desc">Fact infrastructure. RealityNet, HealthNet, EcoNet — systems grounded in verifiable evidence.</div>
+      </div>
+      <div class="concept">
+        <div class="concept-color" style="background:#5b9bd5;"></div>
+        <div class="concept-name">Blue — Civic</div>
+        <div class="concept-desc">Interfaces between individuals and institutions. CivicNet, LaborNet, FinanceNet, ResourceNet.</div>
+      </div>
+      <div class="concept">
+        <div class="concept-color" style="background:#e8a0b4;"></div>
+        <div class="concept-name">Pink — Theological</div>
+        <div class="concept-desc">Sacred domains. SacredPath, WisdomPath, SacredReality — theology without theocracy.</div>
+      </div>
+    </div>
+
+    <h2 class="explainer-heading" style="margin-top:2rem;">Users exist in <em>four positions</em> simultaneously</h2>
+    <p><strong>At the center:</strong> Users interact directly with AquariuOS domains — SacredPath, RealityNet, HealthNet — accessing the system and providing feedback through The Steward.</p>
+    <p><strong>Under The Witness:</strong> Users receive an external orbital perspective on global patterns and potential shadow infiltration from the AI Witness, which operates outside the system to maintain objectivity.</p>
+    <p><strong>As democratic electorate:</strong> Users elect the 15-member WitnessCouncil that audits The Witness for impartiality, ensuring AI oversight remains accountable to human governance.</p>
+    <p><strong>Among the Lunar Constellation:</strong> Users access multiple organizational perspectives — labor, religious, scientific, shadow — to understand how different communities interpret the same events through their distinct frames.</p>
+  </div>
+</div>
+
+<!-- ─── LIGHTBOX ─── -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close" onclick="closeLightbox()">Close ✕</div>
+  <img src="AquariuOS_System_Diagram.jpg" alt="The AquariuOS System Diagram — Full Resolution">
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-left">AquariuOS · Project 2222 · Alpha V1.03 · aquariuos.com/systems-diagram</div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="aquariuos.html">Full Architecture</a></li>
+    <li><a href="immune-system-diagram.html">Immune System</a></li>
+    <li><a href="AquariuOS_Alpha_V1_03_0227.pdf" download>Download PDF</a></li>
+    <li><a href="https://github.com/Beargoat/AquariuOS" target="_blank">GitHub</a></li>
+  </ul>
+</footer>
+
+<script>
+  function openLightbox() {
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>

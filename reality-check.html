@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Seven-Step Reality Check — AquariuOS</title>
+<meta name="description" content="A 5–10 minute interactive ritual to check what's really happening. Use when you feel confused, gaslit, pressured, or stuck in a loop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #080f18;
+    --mist:       #0b1520;
+    --navy:       #0d1e2e;
+    --teal:       #4ecdc4;
+    --gold:       #c9a84c;
+    --gold-light: #e2c47a;
+    --white:      #f4f0e8;
+    --pale:       #ccc8be;
+    --silver:     #8a9ab0;
+    --slate:      #4a5568;
+    --serif:      'Cormorant Garamond', Georgia, serif;
+    --sans:       'Outfit', sans-serif;
+    --mono:       'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink); color: var(--pale);
+    font-family: var(--sans); font-weight: 300;
+    line-height: 1.7; min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2.5rem;
+    background: rgba(8,15,24,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100;
+  }
+  .nav-logo { font-family: var(--serif); font-size: 1rem; color: var(--white); text-decoration: none; }
+  .nav-logo span { font-style: italic; color: var(--silver); font-size: 0.8rem; }
+  .nav-links { display: flex; gap: 1rem; align-items: center; }
+  .nav-link { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); text-decoration: none; transition: color 0.2s; }
+  .nav-link:hover { color: var(--gold); }
+  .nav-cta { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid rgba(201,168,76,0.4); padding: 0.4rem 0.9rem; border-radius: 2px; transition: all 0.2s; }
+  .nav-cta:hover { background: rgba(201,168,76,0.1); }
+
+  /* PROGRESS */
+  .progress-bar { height: 2px; background: rgba(255,255,255,0.06); position: sticky; top: 52px; z-index: 99; }
+  .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; width: 0%; }
+
+  /* HERO */
+  .hero { padding: 5rem 2rem 3rem; text-align: center; background: linear-gradient(180deg,#060d18 0%,var(--ink) 100%); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .hero-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(2rem,5vw,3.8rem); font-weight: 300; color: var(--white); line-height: 1.15; margin-bottom: 1rem; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 0.92rem; color: var(--silver); max-width: 500px; margin: 0 auto 0.6rem; line-height: 1.8; }
+  .hero-time { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 2rem; }
+  .hero-start { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 0.85rem 2.2rem; border-radius: 2px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; text-decoration: none; display: inline-block; }
+  .hero-start:hover { background: var(--gold-light); }
+
+  /* WHY IT WORKS */
+  .why-section {
+    background: var(--mist);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 3.5rem 2rem;
+  }
+  .why-inner {
+    max-width: 720px; margin: 0 auto;
+  }
+  .why-intro-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; display: block;
+  }
+  .why-intro-heading {
+    font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 300; color: var(--white); line-height: 1.3; margin-bottom: 0.8rem;
+  }
+  .why-intro-heading em { font-style: italic; color: var(--gold-light); }
+  .why-intro-body {
+    font-size: 0.9rem; color: var(--silver); line-height: 1.85;
+    max-width: 600px; margin-bottom: 2.5rem;
+  }
+  .why-intro-body strong { color: var(--pale); font-weight: 400; }
+
+  .why-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 2rem;
+  }
+  .why-card {
+    background: var(--ink); padding: 1.6rem 1.5rem;
+    transition: background 0.2s;
+  }
+  .why-card:hover { background: #0a1828; }
+  .why-card-icon {
+    font-size: 1.1rem; margin-bottom: 0.7rem; display: block;
+  }
+  .why-card-title {
+    font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--pale); margin-bottom: 0.5rem;
+  }
+  .why-card-body {
+    font-size: 0.82rem; color: var(--silver); line-height: 1.65;
+  }
+  .why-card-body strong { color: var(--pale); font-weight: 400; }
+
+  .why-court {
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px;
+    background: rgba(201,168,76,0.04);
+    padding: 1.8rem 2rem;
+  }
+  .why-court-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: block;
+  }
+  .why-court-heading {
+    font-family: var(--serif); font-size: 1.25rem; font-weight: 300;
+    color: var(--white); margin-bottom: 1rem; line-height: 1.3;
+  }
+  .why-court-items { display: flex; flex-direction: column; gap: 0.9rem; }
+  .why-court-item { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .why-court-num {
+    font-family: var(--mono); font-size: 0.6rem; color: var(--gold);
+    margin-top: 0.15rem; flex-shrink: 0; width: 1.2rem;
+  }
+  .why-court-text { font-size: 0.85rem; color: var(--silver); line-height: 1.7; }
+  .why-court-text strong { color: var(--pale); font-weight: 400; }
+
+  /* CLAIM */
+  .claim-section { margin-bottom: 2.5rem; opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .claim-section.visible { opacity: 1; transform: none; }
+  .claim-label-text { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; display: block; }
+  .claim-heading { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--white); margin-bottom: 0.4rem; line-height: 1.3; }
+  .claim-heading em { font-style: italic; color: var(--gold-light); }
+  .claim-hint { font-size: 0.8rem; color: var(--slate); font-style: italic; margin-bottom: 0.8rem; }
+  .claim-input { width: 100%; background: var(--mist); border: 1px solid rgba(255,255,255,0.1); border-radius: 3px; padding: 1rem 1.2rem; color: var(--white); font-family: var(--serif); font-size: 1.05rem; line-height: 1.5; resize: vertical; min-height: 70px; transition: border-color 0.2s, background 0.2s; outline: none; }
+  .claim-input:focus { border-color: rgba(201,168,76,0.5); background: #0d1e2e; }
+  .claim-input::placeholder { color: var(--slate); font-style: italic; }
+
+  /* STEPS */
+  .step { margin-bottom: 1.5px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .step.visible { opacity: 1; transform: none; }
+  .step-header { display: grid; grid-template-columns: 68px 1fr; background: var(--mist); border-left: 2px solid transparent; transition: border-color 0.3s, background 0.3s; cursor: pointer; }
+  .step.active .step-header { border-left-color: var(--gold); background: #0d1e2e; }
+  .step.completed .step-header { border-left-color: var(--teal); }
+  .step-num-col { display: flex; align-items: flex-start; justify-content: center; padding: 1.4rem 0 0; border-right: 1px solid rgba(255,255,255,0.05); }
+  .step-num { font-family: var(--serif); font-size: 2rem; font-weight: 300; color: rgba(201,168,76,0.2); line-height: 1; transition: color 0.3s; }
+  .step.active .step-num { color: rgba(201,168,76,0.5); }
+  .step.completed .step-num { color: rgba(78,205,196,0.4); }
+  .step-meta { padding: 1.4rem 1.6rem 1.4rem 1.3rem; }
+  .step-domain { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.25rem; }
+  .step-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 300; color: var(--white); line-height: 1.25; }
+  .step-title em { font-style: italic; color: var(--gold-light); }
+  .step-chevron { float: right; font-size: 0.65rem; color: var(--slate); margin-top: 0.2rem; transition: transform 0.3s; display: inline-block; }
+  .step.active .step-chevron { transform: rotate(180deg); }
+  .step-check { display: none; float: right; font-size: 0.65rem; color: var(--teal); font-family: var(--mono); margin-top: 0.2rem; }
+  .step.completed .step-check { display: inline; }
+  .step.completed .step-chevron { display: none; }
+
+  /* STEP BODY */
+  .step-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: var(--mist); }
+  .step.active .step-body { max-height: 1000px; }
+  .step-body-inner { padding: 0 1.6rem 1.8rem 4.2rem; }
+  .step-question { font-size: 0.87rem; color: var(--pale); line-height: 1.8; margin-bottom: 0.5rem; }
+  .step-prompt { font-size: 0.81rem; color: var(--silver); font-style: italic; line-height: 1.7; margin-bottom: 0.8rem; }
+  .step-action { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.9rem; }
+
+  /* INPUTS */
+  .step-textarea { width: 100%; background: rgba(8,15,24,0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 3px; padding: 0.85rem 1rem; color: var(--white); font-family: var(--sans); font-size: 0.88rem; line-height: 1.6; resize: vertical; min-height: 85px; transition: border-color 0.2s, background 0.2s; outline: none; font-weight: 300; }
+  .step-textarea:focus { border-color: rgba(201,168,76,0.4); background: rgba(13,30,46,0.8); }
+  .step-textarea::placeholder { color: var(--slate); }
+
+  /* CHOICE BUTTONS */
+  .choice-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .choice-btn { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.9rem; border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; background: transparent; color: var(--silver); cursor: pointer; transition: all 0.2s; }
+  .choice-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .choice-btn.selected { border-color: var(--teal); color: var(--teal); background: rgba(78,205,196,0.08); }
+
+  /* VALUE TAGS */
+  .values-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .value-tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.06em; padding: 0.3rem 0.7rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--silver); cursor: pointer; transition: all 0.2s; }
+  .value-tag:hover { border-color: var(--gold); color: var(--gold); }
+  .value-tag.selected { border-color: var(--teal); color: var(--teal); background: rgba(78,205,196,0.08); }
+
+  /* IMPACT */
+  .impact-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .impact-btn { font-family: var(--mono); font-size: 0.65rem; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--silver); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+  .impact-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .impact-btn.selected { border-color: var(--teal); color: var(--ink); background: var(--teal); }
+
+  /* NEXT BTN */
+  .step-next { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; border: 1px solid rgba(201,168,76,0.4); color: var(--gold); padding: 0.5rem 1.2rem; border-radius: 2px; cursor: pointer; transition: all 0.2s; margin-top: 0.9rem; }
+  .step-next:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+  /* REFLECTION */
+  .reflection { margin-top: 3rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.06); opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .reflection.visible { opacity: 1; transform: none; }
+  .reflection-heading { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; color: var(--white); margin-bottom: 0.4rem; }
+  .reflection-heading em { font-style: italic; color: var(--gold-light); }
+  .reflection-sub { font-size: 0.85rem; color: var(--silver); margin-bottom: 2rem; }
+  .refl-item { margin-bottom: 1.4rem; }
+  .refl-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.45rem; display: block; }
+  .refl-textarea { width: 100%; background: var(--mist); border: 1px solid rgba(255,255,255,0.08); border-radius: 3px; padding: 0.85rem 1rem; color: var(--white); font-family: var(--sans); font-size: 0.88rem; line-height: 1.6; resize: vertical; min-height: 65px; transition: border-color 0.2s, background 0.2s; outline: none; font-weight: 300; }
+  .refl-textarea:focus { border-color: rgba(201,168,76,0.4); background: #0d1e2e; }
+  .refl-textarea::placeholder { color: var(--slate); }
+
+  /* DOWNLOAD */
+  .download-section { margin-top: 2.5rem; padding: 2.5rem; background: var(--mist); border-radius: 3px; border: 1px solid rgba(201,168,76,0.15); text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .download-section.visible { opacity: 1; transform: none; }
+  .dl-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+  .dl-heading { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; color: var(--white); margin-bottom: 0.4rem; }
+  .dl-sub { font-size: 0.82rem; color: var(--silver); margin-bottom: 1.5rem; }
+  .dl-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+  .btn-gold { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 0.75rem 1.8rem; border-radius: 2px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; text-decoration: none; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-ghost-sm { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); color: var(--pale); padding: 0.75rem 1.8rem; border-radius: 2px; background: transparent; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+  .btn-ghost-sm:hover { border-color: var(--pale); color: var(--white); }
+
+  /* CLOSING */
+  .closing { margin-top: 2.5rem; text-align: center; padding-bottom: 2rem; opacity: 0; transition: opacity 0.5s; }
+  .closing.visible { opacity: 1; }
+  .closing-quote { font-family: var(--serif); font-size: 1.15rem; font-weight: 300; color: var(--pale); font-style: italic; line-height: 1.5; margin-bottom: 0.5rem; }
+  .closing-body { font-size: 0.8rem; color: var(--slate); line-height: 1.7; }
+  .closing-body a { color: var(--silver); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 1.8rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-left { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; color: var(--slate); }
+  .footer-links { list-style: none; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* EXAMPLE TABS */
+  .ex-tabs {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .ex-tab {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.45rem 1rem;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 2px;
+    background: transparent; color: var(--silver); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ex-tab:hover { border-color: var(--teal); color: var(--teal); }
+  .ex-tab.active {
+    border-color: var(--teal); color: var(--teal);
+    background: rgba(78,205,196,0.08);
+  }
+  .ex-panel { display: none; }
+  .ex-panel.active { display: block; }
+
+  /* EXAMPLE SECTION */
+  .example-section {
+    background: var(--ink);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 3.5rem 2rem;
+  }
+  .example-inner { max-width: 720px; margin: 0 auto; }
+  .example-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; display: block;
+  }
+  .example-heading {
+    font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-weight: 300; color: var(--white); line-height: 1.3; margin-bottom: 0.6rem;
+  }
+  .example-heading em { font-style: italic; color: var(--gold-light); }
+  .example-intro {
+    font-size: 0.88rem; color: var(--silver); line-height: 1.8; margin-bottom: 2rem;
+    max-width: 580px;
+  }
+  .example-scenario {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .example-entries { display: flex; flex-direction: column; gap: 1px; }
+  .example-entry {
+    display: grid; grid-template-columns: 200px 1fr;
+    background: var(--mist);
+    transition: background 0.2s;
+  }
+  .example-entry:hover { background: #0d1e2e; }
+  .example-entry-label {
+    padding: 1.1rem 1.2rem;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  .example-entry-field {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.25rem;
+  }
+  .example-entry-name {
+    font-family: var(--serif); font-size: 0.95rem; font-weight: 300;
+    color: var(--pale); line-height: 1.2;
+  }
+  .example-entry-name em { font-style: italic; color: var(--gold-light); }
+  .example-entry-content { padding: 1.1rem 1.4rem; }
+  .example-entry-q {
+    font-size: 0.75rem; color: var(--slate); font-style: italic;
+    margin-bottom: 0.4rem; line-height: 1.5;
+  }
+  .example-entry-a {
+    font-size: 0.88rem; color: var(--white); line-height: 1.65;
+  }
+  .example-entry-a strong { color: var(--gold-light); font-weight: 400; }
+  .example-note {
+    margin-top: 1.2rem; padding: 1rem 1.2rem;
+    border-left: 2px solid rgba(78,205,196,0.3);
+    font-size: 0.82rem; color: var(--silver); line-height: 1.7;
+    font-style: italic;
+  }
+  @media (max-width: 640px) {
+    .example-entry { grid-template-columns: 1fr; }
+    .example-entry-label { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.6rem; }
+  }
+  @media print {
+    nav, .progress-bar, .hero-start, .step-next, .step-chevron, .download-section, footer, .closing { display: none !important; }
+    body { background: white; color: #111; }
+    .hero { background: white; padding: 1rem; border: none; }
+    .hero h1, .claim-heading, .step-title, .reflection-heading { color: #111; }
+    .hero-sub, .claim-hint, .step-question, .step-prompt, .reflection-sub { color: #555; }
+    .step, .claim-section, .reflection { opacity: 1 !important; transform: none !important; }
+    .step-body { max-height: none !important; }
+    .step-header { background: #f5f5f5; border-left: 2px solid #ccc; }
+    .step-textarea, .claim-input, .refl-textarea { border: none; border-bottom: 1px solid #ccc; background: transparent; color: #111; padding: 0.2rem 0; }
+    .choice-btn.selected, .value-tag.selected { border-color: #333; color: #333; background: #eee; }
+    .impact-btn.selected { background: #333; color: white; border-color: #333; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.2rem; }
+    .form-wrap { padding: 2rem 1.2rem 4rem; }
+    .step-body-inner { padding: 0 1rem 1.5rem 3.2rem; }
+    footer { padding: 1.5rem 1.2rem; flex-direction: column; }
+  }
+
+  /* SEED BRIDGE (hero connective tissue) */
+  .seed-bridge {
+    margin-top: 2rem; padding: 1.2rem 1.6rem;
+    border: 1px solid rgba(78,205,196,0.2);
+    border-radius: 3px; background: rgba(78,205,196,0.04);
+    max-width: 520px; margin-left: auto; margin-right: auto;
+    text-align: left;
+  }
+  .seed-bridge-label {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; display: block;
+  }
+  .seed-bridge-text {
+    font-size: 0.84rem; color: var(--silver); line-height: 1.75;
+  }
+  .seed-bridge-text strong { color: var(--pale); font-weight: 400; }
+  .seed-bridge-link {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em;
+    color: var(--teal); text-decoration: none; display: inline-block;
+    margin-top: 0.6rem; border-bottom: 1px solid rgba(78,205,196,0.3);
+    transition: border-color 0.2s;
+  }
+  .seed-bridge-link:hover { border-color: var(--teal); }
+
+  /* WHAT'S NEXT SECTION */
+  .next-section {
+    background: var(--mist);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 4rem 2rem;
+  }
+  .next-inner { max-width: 720px; margin: 0 auto; }
+  .next-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; display: block;
+  }
+  .next-heading {
+    font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 300; color: var(--white); line-height: 1.25; margin-bottom: 1rem;
+  }
+  .next-heading em { font-style: italic; color: var(--gold-light); }
+  .next-body {
+    font-size: 0.9rem; color: var(--silver); line-height: 1.85;
+    max-width: 600px; margin-bottom: 2.5rem;
+  }
+  .next-body strong { color: var(--pale); font-weight: 400; }
+  .next-body a { color: var(--teal); text-decoration: none; border-bottom: 1px solid rgba(78,205,196,0.3); }
+  .next-body a:hover { border-color: var(--teal); }
+
+  .next-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px; background: rgba(255,255,255,0.04);
+    margin-bottom: 3rem;
+  }
+  .next-step-card {
+    background: var(--ink); padding: 1.5rem 1.4rem;
+  }
+  .next-step-num {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em;
+    color: var(--gold); margin-bottom: 0.5rem; display: block;
+  }
+  .next-step-title {
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 300;
+    color: var(--white); margin-bottom: 0.4rem; line-height: 1.3;
+  }
+  .next-step-title em { font-style: italic; color: var(--gold-light); }
+  .next-step-body {
+    font-size: 0.8rem; color: var(--silver); line-height: 1.65;
+  }
+  .next-step-status {
+    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 0.6rem; display: inline-block;
+    padding: 0.2rem 0.5rem; border-radius: 2px;
+  }
+  .status-live { color: var(--teal); border: 1px solid rgba(78,205,196,0.3); background: rgba(78,205,196,0.06); }
+  .status-next { color: var(--gold); border: 1px solid rgba(201,168,76,0.3); background: rgba(201,168,76,0.06); }
+  .status-later { color: var(--slate); border: 1px solid rgba(74,85,104,0.4); }
+
+  /* PILOT FORM */
+  .pilot-block {
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 3px; background: rgba(201,168,76,0.04);
+    padding: 2rem 2rem 2.2rem;
+  }
+  .pilot-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; display: block;
+  }
+  .pilot-heading {
+    font-family: var(--serif); font-size: 1.35rem; font-weight: 300;
+    color: var(--white); margin-bottom: 0.5rem; line-height: 1.3;
+  }
+  .pilot-sub {
+    font-size: 0.83rem; color: var(--silver); line-height: 1.7; margin-bottom: 1.4rem;
+  }
+  .pilot-questions { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.2rem; }
+  .pilot-q-label {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.35rem; display: block;
+  }
+  .pilot-textarea {
+    width: 100%; background: rgba(8,15,24,0.7);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 3px;
+    padding: 0.75rem 0.9rem; color: var(--white); font-family: var(--sans);
+    font-size: 0.87rem; line-height: 1.6; resize: vertical; min-height: 70px;
+    outline: none; font-weight: 300; transition: border-color 0.2s;
+  }
+  .pilot-textarea:focus { border-color: rgba(201,168,76,0.4); }
+  .pilot-textarea::placeholder { color: var(--slate); }
+  .pilot-input {
+    width: 100%; background: rgba(8,15,24,0.7);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 3px;
+    padding: 0.65rem 0.9rem; color: var(--white); font-family: var(--mono);
+    font-size: 0.82rem; outline: none; transition: border-color 0.2s;
+  }
+  .pilot-input:focus { border-color: rgba(201,168,76,0.4); }
+  .pilot-input::placeholder { color: var(--slate); }
+  .pilot-submit {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
+    text-transform: uppercase; background: var(--gold); color: var(--ink);
+    padding: 0.75rem 1.8rem; border-radius: 2px; border: none;
+    cursor: pointer; font-weight: 500; transition: background 0.2s;
+  }
+  .pilot-submit:hover { background: var(--gold-light); }
+  .pilot-confirm {
+    display: none; font-family: var(--mono); font-size: 0.72rem;
+    color: var(--teal); letter-spacing: 0.06em; margin-top: 0.8rem;
+  }
+  .pilot-note {
+    font-size: 0.75rem; color: var(--slate); margin-top: 0.8rem; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">AquariuOS <span>/ Reality Check</span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="aquariuos.html" class="nav-link">Architecture</a>
+    <a href="reality-check.pdf" download class="nav-cta">Print PDF ↓</a>
+  </div>
+</nav>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<section class="hero">
+  <div class="hero-label">The Seven-Step Reality Check · Interactive</div>
+  <h1>What's <em>actually</em><br>happening right now?</h1>
+  <p class="hero-sub">A 5–10 minute ritual to check what's really going on. Your answers stay on your device — nothing is sent anywhere.</p>
+  <div class="hero-time">⏱ 5–10 minutes &nbsp;·&nbsp; Private &nbsp;·&nbsp; Download your session when done</div>
+
+  <div class="seed-bridge">
+    <span class="seed-bridge-label">What this is · and what it connects to</span>
+    <p class="seed-bridge-text">These seven steps are the first usable layer of <strong>AquariuOS</strong> — a larger architecture for shared reality. Each field maps directly to a Coherence Marker: the same framework that, at scale, would let two people in a dispute compare structured accounts of the same event. Right now, it runs in your head, on paper, alone. That's the point. <strong>The seed of any system that helps people understand each other is a single person learning to see their own reality clearly.</strong></p>
+    <a href="aquariuos.html" class="seed-bridge-link">Read the full architecture →</a>
+  </div>
+
+  <a href="#begin" class="hero-start" onclick="startCheck()" style="margin-top:1.5rem;">Begin the Check →</a>
+</section>
+
+<!-- WHY IT WORKS OVER TIME -->
+<section class="why-section">
+  <div class="why-inner">
+
+    <span class="why-intro-label">Why This Works · Especially Over Time</span>
+    <h2 class="why-intro-heading">One session creates clarity.<br><em>Repeated sessions create proof.</em></h2>
+    <p class="why-intro-body">The real power of this check isn't in doing it once — it's in doing it regularly, over weeks and months. Each dated session becomes a record of your reality as it happened. <strong>Not as you remember it. Not as someone else reframes it later. As it was, at that moment, in your own words.</strong></p>
+
+    <div class="why-cards">
+      <div class="why-card">
+        <span class="why-card-icon">🔒</span>
+        <div class="why-card-title">Stops Gaslighting Cold</div>
+        <div class="why-card-body">When someone tells you "that never happened" or "you're too sensitive," you have dated, structured entries that say otherwise. <strong>It's very hard to argue with your own handwriting from six months ago.</strong></div>
+      </div>
+      <div class="why-card">
+        <span class="why-card-icon">📈</span>
+        <div class="why-card-title">Reveals Real Patterns</div>
+        <div class="why-card-body">One bad day is noise. Twelve entries showing the same trigger, the same dynamic, the same outcome? <strong>That's signal.</strong> You start to see your life more clearly than anyone else can describe it to you.</div>
+      </div>
+      <div class="why-card">
+        <span class="why-card-icon">🧠</span>
+        <div class="why-card-title">Rebuilds Self-Trust</div>
+        <div class="why-card-body">The biggest win is quieter: <strong>you stop doubting yourself.</strong> When the facts are written down, the attempts to rewrite them stop working. You become a reliable witness to your own life.</div>
+      </div>
+    </div>
+
+    <!-- COURT / LEGAL -->
+    <div class="why-court">
+      <span class="why-court-label">If It Ever Goes Further · Why This Holds Up</span>
+      <div class="why-court-heading">Judges hate drama. They love data.</div>
+      <div class="why-court-items">
+        <div class="why-court-item">
+          <div class="why-court-num">01</div>
+          <div class="why-court-text"><strong>Timestamps matter.</strong> A digitally timestamped session — or a dated journal entry — proves you didn't construct a narrative six months later. It is a contemporaneous record of your reality as it happened. Courts weight that heavily.</div>
+        </div>
+        <div class="why-court-item">
+          <div class="why-court-num">02</div>
+          <div class="why-court-text"><strong>Separating emotion from fact makes you credible.</strong> By walking through the six fields — raw data first, interpretation later — you present yourself as a calm, structured, objective witness. That is the opposite of what the other side will claim you are.</div>
+        </div>
+        <div class="why-court-item">
+          <div class="why-court-num">03</div>
+          <div class="why-court-text"><strong>Psychological anchoring protects your testimony.</strong> People who have been gaslit often contradict themselves under pressure because their memory has been repeatedly destabilized. Regular entries mean your account stays consistent — because it was never constructed. It was observed.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WORKED EXAMPLE -->
+<section class="example-section">
+  <div class="example-inner">
+
+    <span class="example-label">See It In Action · Worked Examples</span>
+    <h2 class="example-heading">What a completed check <em>actually looks like</em></h2>
+    <p class="example-intro">If you're unsure how to fill this out, choose a scenario below. Notice how each field strips away a layer of story and gets closer to what actually happened.</p>
+
+    <div class="ex-tabs">
+      <button class="ex-tab active"  onclick="showExample('custody',    this)">Custody Exchange</button>
+      <button class="ex-tab"         onclick="showExample('workplace',  this)">Workplace Credit</button>
+      <button class="ex-tab"         onclick="showExample('gaslighting',this)">Relationship Gaslighting</button>
+      <button class="ex-tab"         onclick="showExample('self',       this)">Inner Shame Spiral</button>
+    </div>
+
+    <div id="exampleDisplay">
+<div class="example-scenario">Scenario: A custody exchange that felt tense and confusing</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Claim</div><div class="example-entry-name">Initial <em>thought</em></div></div><div class="example-entry-content"><div class="example-entry-q">What's on your mind right now?</div><div class="example-entry-a">"The handoff tonight felt hostile and I don't know if I handled it right."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 1 · Material</div><div class="example-entry-name">What would a camera <em>actually see?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Neutral facts only — no adjectives like "he was mean."</div><div class="example-entry-a"><strong>"He arrived at 6:15 PM. It was raining. The kids were crying. The exchange lasted four minutes. No physical contact."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 2 · Relational</div><div class="example-entry-name">Is this thought mine, or an <em>echo?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Whose voice is behind this?</div><div class="example-entry-a"><strong>"My goal was to keep it under two minutes to avoid conflict. The voice saying I handled it wrong sounds like my sister, who thinks I'm always too rigid."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 3 · Systemic</div><div class="example-entry-name">Pattern or this <em>week's exhaustion?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Has this happened before?</div><div class="example-entry-a"><strong>Pattern.</strong> "Late arrivals every third week, worse after scheduling changes. Three prior instances documented."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 4 · Symbolic</div><div class="example-entry-name">What bigger story am I <em>fitting this into?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What narrative does this confirm?</div><div class="example-entry-a"><strong>"He will never respect the agreed schedule and I have no recourse."</strong> He likely believes I'm being rigid.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 5 · Aspirational</div><div class="example-entry-name">Does this protect what <em>actually matters?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Values? Does this thought help or hurt them?</div><div class="example-entry-a">Values: <strong>Safety, Fairness.</strong> This thought <strong>hurts</strong> — keeps me reactive. Text at 6:00 PM on record. Neighbor saw the car arrive.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 6 · Action</div><div class="example-entry-name">What is your <em>chosen response?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Having seen all of this — what is your chosen response, even if that response is stillness?</div><div class="example-entry-a"><strong>"Email my attorney the incident summary tonight. Include the 6:00 PM text and note that a neighbor witnessed the arrival time."</strong> When: Tonight before 10 PM.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 7 · Transcendent</div><div class="example-entry-name">How much does this <em>actually weigh?</em></div></div><div class="example-entry-content"><div class="example-entry-q">In the long view, what's the true weight of tonight?</div><div class="example-entry-a">Rating: <strong>4/10.</strong> Tonight itself is minor. The pattern it represents is a 7. The action is taken. I can rest now.</div></div></div>
+      </div>
+      <div class="example-note">The initial feeling was "hostile and confusing." The documented reality: a 15-minute late arrival in rain, witnessed by a neighbor, with a text timestamp on record. That's the difference between a feeling and evidence. Both are real. Only one holds up.</div>
+    </div>
+
+    <!-- WORKPLACE -->
+    </div>
+
+  </div>
+</section>
+
+<!-- EXAMPLE DATA: hidden templates -->
+<div id="exdata-custody"    style="display:none"><div class="example-scenario">Scenario: A custody exchange that felt tense and confusing</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Claim</div><div class="example-entry-name">Initial <em>thought</em></div></div><div class="example-entry-content"><div class="example-entry-q">What's on your mind right now?</div><div class="example-entry-a">"The handoff tonight felt hostile and I don't know if I handled it right."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 1 · Material</div><div class="example-entry-name">What would a camera <em>actually see?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Neutral facts only — no adjectives like "he was mean."</div><div class="example-entry-a"><strong>"He arrived at 6:15 PM. It was raining. The kids were crying. The exchange lasted four minutes. No physical contact."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 2 · Relational</div><div class="example-entry-name">Is this thought mine, or an <em>echo?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Whose voice is behind this?</div><div class="example-entry-a"><strong>"My goal was to keep it under two minutes to avoid conflict. The voice saying I handled it wrong sounds like my sister, who thinks I'm always too rigid."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 3 · Systemic</div><div class="example-entry-name">Pattern or this <em>week's exhaustion?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Has this happened before?</div><div class="example-entry-a"><strong>Pattern.</strong> "Late arrivals every third week, worse after scheduling changes. Three prior instances documented."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 4 · Symbolic</div><div class="example-entry-name">What bigger story am I <em>fitting this into?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What narrative does this confirm?</div><div class="example-entry-a"><strong>"He will never respect the agreed schedule and I have no recourse."</strong> He likely believes I'm being rigid.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 5 · Aspirational</div><div class="example-entry-name">Does this protect what <em>actually matters?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Values? Does this thought help or hurt them?</div><div class="example-entry-a">Values: <strong>Safety, Fairness.</strong> This thought <strong>hurts</strong> — keeps me reactive. Text at 6:00 PM on record. Neighbor saw the car arrive.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 6 · Action</div><div class="example-entry-name">What is your <em>chosen response?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Having seen all of this — what is your chosen response, even if that response is stillness?</div><div class="example-entry-a"><strong>"Email my attorney the incident summary tonight. Include the 6:00 PM text and note that a neighbor witnessed the arrival time."</strong> When: Tonight before 10 PM.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 7 · Transcendent</div><div class="example-entry-name">How much does this <em>actually weigh?</em></div></div><div class="example-entry-content"><div class="example-entry-q">In the long view, what's the true weight of tonight?</div><div class="example-entry-a">Rating: <strong>4/10.</strong> Tonight itself is minor. The pattern it represents is a 7. The action is taken. I can rest now.</div></div></div>
+      </div>
+      <div class="example-note">The initial feeling was "hostile and confusing." The documented reality: a 15-minute late arrival in rain, witnessed by a neighbor, with a text timestamp on record. That's the difference between a feeling and evidence. Both are real. Only one holds up.</div>
+    </div>
+
+    <!-- WORKPLACE --></div>
+<div id="exdata-workplace"  style="display:none"><div class="example-scenario">Scenario: Your manager presented your idea in a meeting without crediting you</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Claim</div><div class="example-entry-name">Initial <em>thought</em></div></div><div class="example-entry-content"><div class="example-entry-q">What's on your mind right now?</div><div class="example-entry-a">"My manager just took credit for my idea in front of the whole team. But maybe I'm imagining it — maybe I never said it clearly enough."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 1 · Material</div><div class="example-entry-name">What would a camera <em>actually see?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What was literally said and done?</div><div class="example-entry-a"><strong>"In the 10am all-hands, my manager said: 'I've been thinking about restructuring the onboarding flow.' I sent her a Slack message proposing exactly that on Tuesday at 2:17 PM. The message is still in the thread."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 2 · Relational</div><div class="example-entry-name">Is this thought mine, or an <em>echo?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Whose voice is telling you to doubt yourself?</div><div class="example-entry-a"><strong>"My own voice, shaped by years of being told I'm 'too sensitive' about credit. She's done something similar twice before. I stayed quiet both times."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 3 · Systemic</div><div class="example-entry-name">Pattern or this <em>week's exhaustion?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Is this a one-off or does it keep happening?</div><div class="example-entry-a"><strong>Pattern.</strong> "Three instances in eight months. Always in public meetings. My silence may be teaching her this is acceptable."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 4 · Symbolic</div><div class="example-entry-name">What bigger story am I <em>fitting this into?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What narrative does this reinforce?</div><div class="example-entry-a"><strong>"My work is invisible here. I can produce good ideas all day and someone else will get the lift."</strong> That story is making me consider leaving a job I otherwise like.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 5 · Aspirational</div><div class="example-entry-name">Does this protect what <em>actually matters?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Values? Does staying quiet serve them?</div><div class="example-entry-a">Values: <strong>Fairness, Growth, Truth.</strong> Staying quiet <strong>hurts</strong> all three. Small action: forward the original Slack thread to myself by email — timestamped external record before I say anything.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 6 · Action</div><div class="example-entry-name">What is your <em>chosen response?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Having seen all of this — what is your chosen response, even if that response is stillness?</div><div class="example-entry-a"><strong>"Forward the original Slack thread to my personal email right now — timestamped external record. Then draft one sentence to my manager after the weekend: 'I wanted to follow up on the onboarding idea I shared Tuesday.'"</strong> When: Forward now. Message Monday morning.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 7 · Transcendent</div><div class="example-entry-name">How much does this <em>actually weigh?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Career-level view: how significant is this moment?</div><div class="example-entry-a">Rating: <strong>6/10.</strong> Not career-ending. But the pattern is. The action is taken. Now I find out whether this can be fixed — or whether I already have my answer.</div></div></div>
+      </div>
+      <div class="example-note">The self-doubt ("maybe I never said it clearly") dissolved the moment Step 1 required going back to the actual Slack thread. The record existed. The doubt was the problem, not the facts. This is exactly what gaslighting — whether intentional or not — relies on.</div>
+    </div>
+
+    <!-- GASLIGHTING --></div>
+<div id="exdata-gaslighting"style="display:none"><div class="example-scenario">Scenario: Your partner said "I never said that" about a conversation you remember clearly</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Claim</div><div class="example-entry-name">Initial <em>thought</em></div></div><div class="example-entry-content"><div class="example-entry-q">What's on your mind right now?</div><div class="example-entry-a">"We had a conversation last Thursday where he agreed to come to my sister's dinner. Tonight he says he never agreed and that I'm 'making things up again.' Now I'm wondering if I misunderstood."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 1 · Material</div><div class="example-entry-name">What would a camera <em>actually see?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What do you factually remember — and what exists outside your memory?</div><div class="example-entry-a"><strong>"Thursday evening, kitchen, approximately 7:30 PM. He said 'yeah, I can do Saturday.' I texted my sister that night to confirm. That text is timestamped Thursday 7:52 PM."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 2 · Relational</div><div class="example-entry-name">Is this thought mine, or an <em>echo?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Whose voice is telling you that you "made it up"?</div><div class="example-entry-a"><strong>"His voice — and it's not the first time. 'You always do this' is his phrase, not mine. I texted my sister immediately because I was relieved. That's not the behavior of someone who misunderstood."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 3 · Systemic</div><div class="example-entry-name">Pattern or this <em>week's exhaustion?</em></div></div><div class="example-entry-content"><div class="example-entry-q">How often does your memory get challenged like this?</div><div class="example-entry-a"><strong>Pattern.</strong> "Fourth time in three months a specific commitment has been 'remembered differently.' Each time I've ended up apologizing. Each time, I had no record."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 4 · Symbolic</div><div class="example-entry-name">What bigger story am I <em>fitting this into?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What does this keep confirming for you?</div><div class="example-entry-a"><strong>"I can't trust my own memory. I'm the unreliable one in this relationship."</strong> But that story was handed to me. I didn't arrive here with it.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 5 · Aspirational</div><div class="example-entry-name">Does this protect what <em>actually matters?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Values? Does accepting "I made it up" serve them?</div><div class="example-entry-a">Values: <strong>Truth, Connection, Safety.</strong> Accepting his version <strong>hurts</strong> all three. Small action: screenshot the text to my sister and save it dated. Start a simple notes file after significant conversations.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 6 · Action</div><div class="example-entry-name">What is your <em>chosen response?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Having seen all of this — what is your chosen response, even if that response is stillness?</div><div class="example-entry-a"><strong>"Screenshot the text to my sister dated Thursday 7:52 PM and save it to a dated folder. Start a simple notes file: one entry per significant conversation, written the same night."</strong> When: Right now, before I sleep.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 7 · Transcendent</div><div class="example-entry-name">How much does this <em>actually weigh?</em></div></div><div class="example-entry-content"><div class="example-entry-q">One incident, or something larger?</div><div class="example-entry-a">Rating: <strong>8/10.</strong> Not because of Saturday dinner. Because if my own memory is being systematically undermined, that is the relationship. The action is taken. This entry is the first one I can point to where I know for certain what happened.</div></div></div>
+      </div>
+      <div class="example-note">The text to her sister at 7:52 PM is not just a convenience — it is contemporaneous evidence created before any dispute existed. This is exactly how you stop doubting yourself: not by arguing harder, but by having documented your reality at the time it happened.</div>
+    </div>
+
+    <!-- SELF / SHAME SPIRAL --></div>
+<div id="exdata-self"       style="display:none"><div class="example-scenario">Scenario: The thought "I always mess things up" won't leave you alone</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Claim</div><div class="example-entry-name">Initial <em>thought</em></div></div><div class="example-entry-content"><div class="example-entry-q">What's on your mind right now?</div><div class="example-entry-a">"I always mess things up. I forgot to send one email and now I'm spiraling — I don't know if this is a real pattern or just a bad week."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 1 · Material</div><div class="example-entry-name">What would a camera <em>actually see?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What actually happened — just the facts?</div><div class="example-entry-a"><strong>"I forgot to forward a meeting confirmation to a client on Tuesday. The meeting still happened. The client rescheduled without complaint. No project was affected."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 2 · Relational</div><div class="example-entry-name">Is this thought mine, or an <em>echo?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Who taught you "I always mess things up"?</div><div class="example-entry-a"><strong>"That's my father's voice. 'You never follow through' was a phrase I heard a lot growing up. I have followed through on the last eleven deliverables at work without a single miss."</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 3 · Systemic</div><div class="example-entry-name">Pattern or this <em>week's exhaustion?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Is "always" actually true?</div><div class="example-entry-a"><strong>This moment's noise.</strong> "I've been sleeping four to five hours for two weeks. This is the first miss in months. 'Always' is not a pattern — it's a feeling attached to exhaustion."</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 4 · Symbolic</div><div class="example-entry-name">What bigger story am I <em>fitting this into?</em></div></div><div class="example-entry-content"><div class="example-entry-q">What does "I always mess things up" really mean?</div><div class="example-entry-a"><strong>"I'm fundamentally unreliable and people will eventually see through me."</strong> That story predates this job by about thirty years.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 5 · Aspirational</div><div class="example-entry-name">Does this protect what <em>actually matters?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Values? Does the shame spiral serve them?</div><div class="example-entry-a">Values: <strong>Growth, Ease, Truth.</strong> The spiral <strong>hurts</strong> all three. It costs two hours of rumination for a mistake that cost the client nothing. Small action: sleep. Then a brief follow-up note tomorrow — not an apology, just a confirmation.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 6 · Action</div><div class="example-entry-name">What is your <em>chosen response?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Having seen all of this — what is your chosen response, even if that response is stillness?</div><div class="example-entry-a"><strong>"Sleep. Tomorrow morning, send the client a brief one-line confirmation — not an apology, just a follow-up. Then note in my phone: this spiral was exhaustion, not evidence."</strong> When: Sleep now. Follow-up at 9 AM.</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Step 7 · Transcendent</div><div class="example-entry-name">How much does this <em>actually weigh?</em></div></div><div class="example-entry-content"><div class="example-entry-q">Zoom out: in the full story of your life, how heavy is this?</div><div class="example-entry-a">Rating: <strong>2/10.</strong> The missed email is a 1. The pattern of self-attack after minor mistakes is worth examining — but separately, and not at midnight. The action is set. I can rest.</div></div></div>
+      </div>
+      <div class="example-note">The word "always" didn't survive Step 1. One missed email in eleven deliverables is not a pattern — it's a data point being recruited into an old story. This is what the check does for internal spirals: it applies the same standard of evidence to the claims we make about ourselves as we'd apply to anyone else.</div></div>
+
+<div class="form-wrap" id="formWrap">
+  <!-- CLAIM -->
+  <div class="claim-section visible" id="claimSection">
+    <span class="claim-label-text">Start Here — Before Step 1</span>
+    <h2 class="claim-heading">Write your initial <em>thought or claim</em></h2>
+    <p class="claim-hint">e.g. "I always mess up." &nbsp;·&nbsp; "They don't care about me." &nbsp;·&nbsp; "Adulthood killed all the fun." &nbsp;·&nbsp; "This situation doesn't matter."</p>
+    <textarea class="claim-input" id="claim" rows="2" placeholder="Write whatever is on your mind right now..." oninput="updateProgress()"></textarea>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step visible" id="step-1">
+    <div class="step-header" onclick="toggleStep(1)">
+      <div class="step-num-col"><div class="step-num">1</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Material · Raw Data</div>
+        <div class="step-title">What would a camera <em>actually see?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">What would a neutral observer see or hear right now, or in the recent events? Stick to facts only — no interpretation, no story, no feelings yet.</p>
+      <p class="step-prompt">What actually happened? What was literally said or done? What would a recording show?</p>
+      <div class="step-action">→ Write 2–3 concrete observations.</div>
+      <textarea class="step-textarea" id="ans-1" rows="3" placeholder="Just the facts — what a camera would capture..." oninput="updateProgress(); checkStepComplete(1)"></textarea>
+      <button class="step-next" onclick="nextStep(1)">Next step →</button>
+    </div></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step visible" id="step-2">
+    <div class="step-header" onclick="toggleStep(2)">
+      <div class="step-num-col"><div class="step-num">2</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Relational · Whose Voice?</div>
+        <div class="step-title">Is this thought mine, or is it <em>an echo?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">Is this thought mostly yours right now, or is it echoing someone else's voice — a parent, an ex, a boss, social media, past trauma, a cultural script?</p>
+      <p class="step-prompt">Whose words or energy feel strongest behind this claim? Who taught you to think this way?</p>
+      <div class="step-action">→ Name the source(s) if you can.</div>
+      <textarea class="step-textarea" id="ans-2" rows="3" placeholder="Whose voice is loudest here?" oninput="updateProgress(); checkStepComplete(2)"></textarea>
+      <button class="step-next" onclick="nextStep(2)">Next step →</button>
+    </div></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step visible" id="step-3">
+    <div class="step-header" onclick="toggleStep(3)">
+      <div class="step-num-col"><div class="step-num">3</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Systemic · Pattern or Moment?</div>
+        <div class="step-title">Is this a recurring loop or <em>this week's exhaustion?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">Is this a recurring pattern, or mostly this week's exhaustion talking? Look at the last 1–4 weeks: does the same thought spike under certain conditions?</p>
+      <p class="step-prompt">Lack of sleep, conflict, hunger, certain people — what are the triggers?</p>
+      <div class="step-action">→ Select one, then add notes if useful.</div>
+      <div class="choice-row">
+        <button class="choice-btn" id="c3-pattern" onclick="selectChoice(3,'pattern')">Pattern</button>
+        <button class="choice-btn" id="c3-noise" onclick="selectChoice(3,'noise')">This moment's noise</button>
+        <button class="choice-btn" id="c3-both" onclick="selectChoice(3,'both')">Both</button>
+      </div>
+      <textarea class="step-textarea" id="ans-3" rows="2" placeholder="Any notes on triggers or conditions..." oninput="updateProgress()"></textarea>
+      <button class="step-next" onclick="nextStep(3)">Next step →</button>
+    </div></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step visible" id="step-4">
+    <div class="step-header" onclick="toggleStep(4)">
+      <div class="step-num-col"><div class="step-num">4</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Symbolic · The Bigger Story</div>
+        <div class="step-title">What larger story am I <em>fitting this into?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">What overarching narrative does this event seem to confirm? What story about yourself, others, or the world does this thought reinforce?</p>
+      <p class="step-prompt">e.g. "Life is all responsibility now." &nbsp;·&nbsp; "I'm not good enough." &nbsp;·&nbsp; "Nothing ever changes."</p>
+      <div class="step-action">→ Write the story in one sentence.</div>
+      <textarea class="step-textarea" id="ans-4" rows="2" placeholder="The bigger story I'm telling myself is..." oninput="updateProgress(); checkStepComplete(4)"></textarea>
+      <button class="step-next" onclick="nextStep(4)">Next step →</button>
+    </div></div>
+  </div>
+
+    <!-- STEP 5 -->
+  <div class="step visible" id="step-5">
+    <div class="step-header" onclick="toggleStep(5)">
+      <div class="step-num-col"><div class="step-num">5</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Aspirational · What Do I Value?</div>
+        <div class="step-title">Does this thought protect what <em>actually matters to me?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">What matters most to you in the long run? Does this current thought help protect or grow those values — or does it shrink them?</p>
+      <p class="step-prompt">Select any values that feel alive for you right now, then note whether this thought helps or hurts them. This step is pure reflection — no action yet.</p>
+      <div class="step-action">→ Select values, then choose: Helps / Hurts / Neutral</div>
+      <div class="values-row">
+        <button class="value-tag" onclick="toggleValue('play')">Play</button>
+        <button class="value-tag" onclick="toggleValue('friendship')">Friendship</button>
+        <button class="value-tag" onclick="toggleValue('truth')">Truth</button>
+        <button class="value-tag" onclick="toggleValue('connection')">Connection</button>
+        <button class="value-tag" onclick="toggleValue('creativity')">Creativity</button>
+        <button class="value-tag" onclick="toggleValue('rest')">Rest</button>
+        <button class="value-tag" onclick="toggleValue('fairness')">Fairness</button>
+        <button class="value-tag" onclick="toggleValue('ease')">Ease</button>
+        <button class="value-tag" onclick="toggleValue('growth')">Growth</button>
+        <button class="value-tag" onclick="toggleValue('safety')">Safety</button>
+      </div>
+      <div class="choice-row" style="margin-top:0.5rem;">
+        <button class="choice-btn" id="c5-helps" onclick="selectChoice(5,'helps')">Helps</button>
+        <button class="choice-btn" id="c5-hurts" onclick="selectChoice(5,'hurts')">Hurts</button>
+        <button class="choice-btn" id="c5-neutral" onclick="selectChoice(5,'neutral')">Neutral</button>
+      </div>
+      <textarea class="step-textarea" id="ans-5" rows="2" placeholder="What do I see about what matters to me right now?" oninput="updateProgress()"></textarea>
+      <button class="step-next" onclick="nextStep(5)">Next step →</button>
+    </div></div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step visible" id="step-6">
+    <div class="step-header" onclick="toggleStep(6)">
+      <div class="step-num-col"><div class="step-num">6</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Response · What Is Your Chosen Move?</div>
+        <div class="step-title">Having seen all of this — what is your <em>chosen response?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">You have looked at the facts, traced the voices, checked the pattern, named the story, and identified what you value. Now: what is the Having seen all of this — what is your chosen response, even if that response is stillness?</p>
+      <p class="step-prompt">It can be action — or it can be deliberate stillness. Choosing not to react is also a move. Send a text. Save a screenshot. Have a conversation. Or consciously decide to wait, watch, and do nothing for now. The question is not what you will do — it is what you are <em>choosing.</em></p>
+      <div class="step-action">→ Name one action. Be specific. Set a timeframe if it helps.</div>
+      <textarea class="step-textarea" id="ans-6" rows="3" placeholder="My chosen response is..." oninput="updateProgress(); checkStepComplete(6)"></textarea>
+      <div class="step-action" style="margin-top:0.8rem;">→ When, or why not yet? (optional)</div>
+      <textarea class="step-textarea" id="ans-6b" rows="1" placeholder="e.g. Tonight / Not until I know more / No timeline — this is a wait" oninput="updateProgress()" style="min-height:44px;"></textarea>
+      <button class="step-next" onclick="nextStep(6)">Next step →</button>
+    </div></div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step visible" id="step-7">
+    <div class="step-header" onclick="toggleStep(7)">
+      <div class="step-num-col"><div class="step-num">7</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Transcendent · Big-Picture Weight</div>
+        <div class="step-title">How much does this <em>actually weigh</em> in the long view?
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">Zoom out: in the full arc of your life — or even in the larger human story — how much real weight does this thought carry? Will it still feel this big in a month? A year? Ten years?</p>
+      <p class="step-prompt">Not to dismiss what you're feeling — but to give it its true proportion. You've already decided what to do. Now you can rest in perspective.</p>
+      <div class="step-action">→ Rate it: 1 (barely registers) — 10 (defines everything)</div>
+      <div class="impact-row">
+        <button class="impact-btn" id="imp-1" onclick="selectImpact(1)">1</button>
+        <button class="impact-btn" id="imp-2" onclick="selectImpact(2)">2</button>
+        <button class="impact-btn" id="imp-3" onclick="selectImpact(3)">3</button>
+        <button class="impact-btn" id="imp-4" onclick="selectImpact(4)">4</button>
+        <button class="impact-btn" id="imp-5" onclick="selectImpact(5)">5</button>
+        <button class="impact-btn" id="imp-6" onclick="selectImpact(6)">6</button>
+        <button class="impact-btn" id="imp-7" onclick="selectImpact(7)">7</button>
+        <button class="impact-btn" id="imp-8" onclick="selectImpact(8)">8</button>
+        <button class="impact-btn" id="imp-9" onclick="selectImpact(9)">9</button>
+        <button class="impact-btn" id="imp-10" onclick="selectImpact(10)">10</button>
+      </div>
+      <textarea class="step-textarea" id="ans-7" rows="2" placeholder="Any notes on proportion or perspective..." oninput="updateProgress()"></textarea>
+      <button class="step-next" onclick="completeSteps()">See my reflection →</button>
+    </div></div>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="reflection" id="reflection">
+    <h2 class="reflection-heading">Quick <em>Reflection</em></h2>
+    <p class="reflection-sub">One sentence each. You don't have to fix anything — just see more clearly.</p>
+    <div class="refl-item">
+      <span class="refl-label">01 · What shifted for me in the last few minutes?</span>
+      <textarea class="refl-textarea" id="refl-1" rows="2" placeholder="One thing I now see more clearly..." oninput="updateProgress()"></textarea>
+    </div>
+    <div class="refl-item">
+      <span class="refl-label">02 · Do I want to return to this?</span>
+      <textarea class="refl-textarea" id="refl-2" rows="2" placeholder="Is this resolved for now, or do I need to sit with it longer?" oninput="updateProgress()"></textarea>
+    </div>
+    <div class="refl-item">
+      <span class="refl-label">03 · If I talk to someone, who feels safe?</span>
+      <textarea class="refl-textarea" id="refl-3" rows="2" placeholder="Name someone, or note if you'd rather sit with this alone..." oninput="updateProgress()"></textarea>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <div class="download-section" id="downloadSection">
+    <div class="dl-label">Session Complete</div>
+    <h3 class="dl-heading">Save your Reality Check</h3>
+    <p class="dl-sub">Your answers exist only in this browser tab. Download now to preserve them — the file includes a timestamp, making it a contemporaneous record of your reality as it happened.</p>
+    <div class="dl-actions">
+      <button class="btn-gold" onclick="downloadSession()">Download as Text ↓</button>
+      <button class="btn-ghost-sm" onclick="window.print()">Print / Save PDF</button>
+      <button class="btn-ghost-sm" onclick="startOver()">Start Over</button>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing" id="closing">
+    <p class="closing-quote">"You don't have to fix anything. Just seeing the layers often creates breathing room."</p>
+    <p class="closing-body">Free to share · aquariuos.com/reality-check · Your answers never leave this device.</p>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<!-- WHAT WE'RE BUILDING NEXT -->
+<section class="next-section">
+  <div class="next-inner">
+
+    <span class="next-label">The Bigger Picture · Where This Leads</span>
+    <h2 class="next-heading">This form is a seed.<br><em>Here is what it grows into.</em></h2>
+    <p class="next-body">The seven steps you just completed are the first layer of <strong>AquariuOS</strong> — an architecture for shared reality. Each field maps to a Coherence Marker: a structured dimension of how humans perceive and record what happens to them. Right now you did this alone, in your head, on one device. But the framework is designed to scale.<br><br>If two people in a dispute both complete a Reality Check on the same event, you get two structured accounts of the same moment — with timestamps, value declarations, pattern histories, and explicit action records. That is the beginning of a system that can help people understand each other, mediate conflict, and produce records that hold up under pressure. <strong>The pilot program below is how we find out whether that works in practice.</strong></p>
+
+    <div class="next-steps-grid">
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 01</span>
+        <div class="next-step-title">The Seven-Step <em>Reality Check</em></div>
+        <div class="next-step-body">One person. One event. Seven structured fields. Timestamped. Private. The seed of everything else.</div>
+        <span class="next-step-status status-live">Live now</span>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 02</span>
+        <div class="next-step-title">The <em>Journal</em></div>
+        <div class="next-step-body">Multiple sessions over time. Pattern tracking. Trajectory view. See whether the same trigger keeps appearing — and whether your actions are working.</div>
+        <span class="next-step-status status-next">Pilot phase</span>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 03</span>
+        <div class="next-step-title">The <em>Shared Record</em></div>
+        <div class="next-step-body">Two people. Same event. Both complete a check independently. The system surfaces where accounts align, where they diverge, and why.</div>
+        <span class="next-step-status status-later">Architecture stage</span>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 04</span>
+        <div class="next-step-title">The <em>Witness System</em></div>
+        <div class="next-step-body">A trust layer that can hold disputed records, surface patterns across communities, and produce evidence that holds under legal and social scrutiny.</div>
+        <span class="next-step-status status-later">Architecture stage</span>
+      </div>
+    </div>
+
+    <!-- PILOT FEEDBACK FORM -->
+    <div class="pilot-block">
+      <span class="pilot-label">Pilot Program · Tell Us What Happened</span>
+      <h3 class="pilot-heading">Did this work for you?</h3>
+      <p class="pilot-sub">We are not a company. We are not collecting data to sell. We are trying to find out whether this framework actually helps real people in real situations — or whether it needs to change. If you used this check in a genuine situation, your answer matters more than any metric we could track.</p>
+
+      <div class="pilot-questions">
+        <div>
+          <span class="pilot-q-label">01 · What situation did you use this for?</span>
+          <textarea class="pilot-textarea" id="pilot-situation" rows="2" placeholder="You don't have to be specific. 'Workplace conflict' or 'relationship dispute' or 'just a bad week' is enough."></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">02 · Did it create clarity? What changed?</span>
+          <textarea class="pilot-textarea" id="pilot-clarity" rows="3" placeholder="Did anything shift — in how you saw the situation, or in what you did next? Or did it not help at all? Both answers are useful."></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">03 · Did you take the action you identified in Step 6?</span>
+          <textarea class="pilot-textarea" id="pilot-action" rows="2" placeholder="Yes / No / Not yet — and if not, what got in the way?"></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">04 · Would you use this again? Would you show it to someone?</span>
+          <textarea class="pilot-textarea" id="pilot-again" rows="2" placeholder="Honest answer only. We'd rather know it doesn't work than believe it does when it doesn't."></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">05 · Contact (optional — only if you want a response)</span>
+          <input class="pilot-input" id="pilot-contact" type="text" placeholder="Email or any way to reach you. Never shared, never stored beyond this project.">
+        </div>
+      </div>
+
+      <button class="pilot-submit" onclick="submitPilot()">Send This →</button>
+      <div class="pilot-confirm" id="pilotConfirm">Received. Thank you — this genuinely matters.</div>
+      <p class="pilot-note">Your responses are sent to the project team only. No accounts. No tracking. No third-party services. If you'd rather not submit a form, you can email directly: aquariuosity [at] gmail.com</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">AquariuOS · Project 2222 · Your answers never leave this device</div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="aquariuos.html">Full Architecture</a></li>
+    <li><a href="reality-check.pdf" download>Print PDF</a></li>
+    <li><a href="AquariuOS_Alpha_V1_03_0227.pdf" download>Download Document</a></li>
+  </ul>
+</footer>
+
+<script>
+const state = {
+  activeStep: null,
+  completedSteps: new Set(),
+  choices: { 3: null, 5: null },
+  impact: null,
+  values: new Set(),
+  started: false,
+};
+
+function showExample(id, el) {
+  var data    = document.getElementById('exdata-' + id);
+  var display = document.getElementById('exampleDisplay');
+  if (data && display) { display.innerHTML = data.innerHTML; }
+  var tabs = document.querySelectorAll('.ex-tab');
+  for (var j = 0; j < tabs.length; j++) { tabs[j].classList.remove('active'); }
+  if (el) { el.classList.add('active'); }
+}
+
+function startCheck() {
+  document.getElementById('formWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!state.started) {
+    state.started = true;
+    setTimeout(function() {
+      var s = document.getElementById('step-1');
+      s.classList.add('active');
+      state.activeStep = 1;
+    }, 600);
+  }
+}
+
+function toggleStep(num) {
+  state.activeStep === num ? closeStep(num) : openStep(num);
+}
+
+function openStep(num) {
+  if (state.activeStep !== null) closeStep(state.activeStep);
+  state.activeStep = num;
+  document.getElementById('step-' + num).classList.add('active');
+  setTimeout(function() {
+    document.getElementById('step-' + num).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 60);
+}
+
+function closeStep(num) {
+  document.getElementById('step-' + num).classList.remove('active');
+  if (state.activeStep === num) state.activeStep = null;
+}
+
+function nextStep(num) {
+  markComplete(num);
+  if (num < 7) openStep(num + 1);
+  else { closeStep(7); completeSteps(); }
+}
+
+function markComplete(num) {
+  state.completedSteps.add(num);
+  document.getElementById('step-' + num).classList.add('completed');
+  updateProgress();
+}
+
+function checkStepComplete(num) {
+  var val = document.getElementById('ans-' + num).value.trim();
+  if (val.length > 4) markComplete(num);
+}
+
+function selectChoice(step, value) {
+  state.choices[step] = value;
+  var prefix = 'c' + step + '-';
+  document.querySelectorAll('[id^="' + prefix + '"]').forEach(function(btn) {
+    btn.classList.toggle('selected', btn.id === prefix + value);
+  });
+  markComplete(step);
+}
+
+function toggleValue(val) {
+  document.querySelectorAll('.value-tag').forEach(function(btn) {
+    if (btn.textContent.toLowerCase() === val) {
+      if (state.values.has(val)) { state.values.delete(val); btn.classList.remove('selected'); }
+      else { state.values.add(val); btn.classList.add('selected'); }
+    }
+  });
+  updateProgress();
+}
+
+function selectImpact(num) {
+  state.impact = num;
+  for (var i = 1; i <= 10; i++) {
+    document.getElementById('imp-' + i).classList.toggle('selected', i === num);
+  }
+  markComplete(7);
+}
+
+function updateProgress() {
+  var filled = 0;
+  var total = 12; // claim + 7 steps (step 6 has 6b too) + 3 reflections
+  if (document.getElementById('claim').value.trim().length > 3) filled++;
+  for (var i = 1; i <= 5; i++) {
+    var ta = document.getElementById('ans-' + i);
+    if (ta && ta.value.trim().length > 3) filled++;
+  }
+  // Step 6 counts if main answer filled
+  var ta6 = document.getElementById('ans-6');
+  if (ta6 && ta6.value.trim().length > 3) filled++;
+  // Step 7
+  var ta7 = document.getElementById('ans-7');
+  if (ta7 && ta7.value.trim().length > 3) filled++;
+  // Impact rating counts as step 7 complete signal
+  if (state.impact) filled++;
+  for (var j = 1; j <= 3; j++) {
+    var tr = document.getElementById('refl-' + j);
+    if (tr && tr.value.trim().length > 3) filled++;
+  }
+  var pct = Math.min(100, Math.round((filled / total) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function completeSteps() {
+  markComplete(7);
+  var ref = document.getElementById('reflection');
+  ref.classList.add('visible');
+  setTimeout(function() { ref.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+  setTimeout(function() {
+    document.getElementById('downloadSection').classList.add('visible');
+    document.getElementById('closing').classList.add('visible');
+  }, 900);
+}
+
+function downloadSession() {
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  var timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+  var isoStr = now.toISOString();
+  var g = function(id) {
+    var el = document.getElementById(id);
+    return el ? (el.value.trim() || '\u2014') : '\u2014';
+  };
+  var line = '\u2500'.repeat(50);
+  var closingQuote = 'You don' + String.fromCharCode(39) + 't have to fix anything. Just seeing the layers often creates breathing room.';
+  var text = [
+    'THE SEVEN-STEP REALITY CHECK',
+    'AquariuOS \u00b7 Project 2222',
+    'Date: ' + dateStr,
+    'Time: ' + timeStr,
+    'ISO Timestamp: ' + isoStr,
+    '(This timestamp documents when this record was created.)',
+    line, '',
+    'MY CLAIM / INITIAL THOUGHT',
+    g('claim'), '',
+    line,
+    'STEP 1 \u00b7 MATERIAL \u2014 What would a camera actually see?',
+    g('ans-1'), '',
+    'STEP 2 \u00b7 RELATIONAL \u2014 Whose voice?',
+    g('ans-2'), '',
+    'STEP 3 \u00b7 SYSTEMIC \u2014 Pattern or moment?',
+    (state.choices[3] || '\u2014').toUpperCase(),
+    'Notes: ' + g('ans-3'), '',
+    'STEP 4 \u00b7 SYMBOLIC \u2014 The bigger story',
+    g('ans-4'), '',
+    'STEP 5 \u00b7 ASPIRATIONAL \u2014 What do I value?',
+    'Values: ' + ([...state.values].join(', ') || '\u2014'),
+    'This thought: ' + (state.choices[5] || '\u2014').toUpperCase(),
+    'Notes: ' + g('ans-5'), '',
+    'STEP 6 \u00b7 RESPONSE \u2014 What is your chosen response?',
+    g('ans-6'),
+    'When: ' + g('ans-6b'), '',
+    'STEP 7 \u00b7 TRANSCENDENT \u2014 Big-picture weight',
+    'Impact: ' + (state.impact ? state.impact + '/10' : '\u2014'),
+    'Notes: ' + g('ans-7'), '',
+    line,
+    'REFLECTION', '',
+    'What shifted for me:', g('refl-1'), '',
+    'Do I want to return to this:', g('refl-2'), '',
+    'If I talk to someone, who feels safe:', g('refl-3'), '',
+    line,
+    closingQuote, '',
+    'aquariuos.com/reality-check \u00b7 Your answers were never sent anywhere.',
+    'Keep this file. The timestamp is contemporaneous evidence of your reality as it happened.',
+  ].join('\n');
+
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'reality-check-' + isoStr.slice(0,10) + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function startOver() {
+  if (!confirm('Start a new session? Your current answers will be cleared.')) return;
+  document.querySelectorAll('textarea').forEach(function(t) { t.value = ''; });
+  document.querySelectorAll('.choice-btn, .value-tag, .impact-btn').forEach(function(b) { b.classList.remove('selected'); });
+  state.completedSteps = new Set();
+  state.choices = { 3: null, 5: null };
+  state.impact = null;
+  state.values = new Set();
+  state.activeStep = null;
+  for (var i = 1; i <= 7; i++) {
+    var s = document.getElementById('step-' + i);
+    if (s) s.classList.remove('active','completed');
+  }
+  ['reflection','downloadSection','closing'].forEach(function(id) {
+    document.getElementById(id).classList.remove('visible');
+  });
+  document.getElementById('progressFill').style.width = '0%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(function() { openStep(1); }, 500);
+}
+
+function submitPilot() {
+  var situation = document.getElementById('pilot-situation').value.trim();
+  var clarity   = document.getElementById('pilot-clarity').value.trim();
+  var action    = document.getElementById('pilot-action').value.trim();
+  var again     = document.getElementById('pilot-again').value.trim();
+  var contact   = document.getElementById('pilot-contact').value.trim();
+
+  if (!situation && !clarity) {
+    alert('Please share at least something — even one sentence helps.');
+    return;
+  }
+
+  // Build mailto as fallback (no backend needed)
+  var body = [
+    'AQUARIUOS PILOT FEEDBACK',
+    '========================', '',
+    '01 Situation: ' + (situation || '—'), '',
+    '02 Clarity / What changed: ' + (clarity || '—'), '',
+    '03 Took the action (Step 6): ' + (action || '—'), '',
+    '04 Would use again / show to someone: ' + (again || '\u2014'), '',
+    '05 Contact: ' + (contact || 'not provided'),
+  ].join('\n');
+
+  var mailto = 'mailto:aquariuosity@gmail.com'
+    + '?subject=' + encodeURIComponent('AquariuOS Pilot Feedback')
+    + '&body=' + encodeURIComponent(body);
+
+  window.location.href = mailto;
+
+  document.getElementById('pilotConfirm').style.display = 'block';
+  document.querySelector('.pilot-submit').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
