@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Steward · AquariuOS · Project 2222</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&family=Outfit:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:     #080f18;
+    --mist:    #0d1a26;
+    --deep:    #111f2e;
+    --border:  rgba(255,255,255,0.07);
+    --gold:    #c9a84c;
+    --gold-lt: #e2c87a;
+    --teal:    #4ecdc4;
+    --teal-dk: #3ab5ac;
+    --white:   #f4f0e8;
+    --pale:    #ddd8ce;
+    --silver:  #9aa3ad;
+    --slate:   #4a5568;
+    --serif:   'Cormorant Garamond', Georgia, serif;
+    --sans:    'Outfit', sans-serif;
+    --mono:    'DM Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%; background: var(--ink); color: var(--pale);
+    font-family: var(--sans); font-weight: 300;
+  }
+  body {
+    display: flex; flex-direction: column;
+    align-items: center; padding: 2rem 1rem 3rem;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    width: 100%; max-width: 720px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.5rem 0 2rem;
+  }
+  .nav-logo {
+    font-family: var(--serif); font-size: 1.1rem;
+    color: var(--white); text-decoration: none;
+    font-weight: 300;
+  }
+  .nav-logo em { font-style: italic; color: var(--gold-lt); }
+  .nav-back {
+    font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--silver); text-decoration: none;
+    transition: color 0.15s;
+  }
+  .nav-back:hover { color: var(--teal); }
+
+  /* ── WIDGET ── */
+  .widget {
+    width: 100%; max-width: 720px;
+    display: flex; flex-direction: column;
+  }
+
+  .widget-header {
+    padding: 2rem 2rem 1.5rem;
+    border: 1px solid var(--border); border-bottom: none;
+    border-radius: 14px 14px 0 0;
+    background: var(--mist); position: relative; overflow: hidden;
+  }
+  .widget-header::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--teal), var(--gold), transparent);
+  }
+  .header-eyebrow {
+    font-family: var(--mono); font-size: 0.55rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 0.5rem; display: block;
+  }
+  .header-title {
+    font-family: var(--serif); font-size: 2rem;
+    font-weight: 300; color: var(--white); line-height: 1.2;
+    margin-bottom: 0.6rem;
+  }
+  .header-title em { font-style: italic; color: var(--gold-lt); }
+  .header-sub {
+    font-size: 0.88rem; color: var(--silver); line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* suggestions */
+  .suggestions {
+    padding: 0.8rem 2rem;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    background: var(--ink);
+    display: flex; flex-wrap: wrap; gap: 0.45rem;
+  }
+  .suggestions-label {
+    width: 100%; font-family: var(--mono); font-size: 0.5rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--slate); margin-bottom: 0.2rem;
+  }
+  .sugg-btn {
+    font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.04em; padding: 0.38rem 0.8rem;
+    background: transparent; border: 1px solid rgba(78,205,196,0.18);
+    border-radius: 20px; color: var(--silver); cursor: pointer;
+    transition: all 0.18s;
+  }
+  .sugg-btn:hover { border-color: var(--teal); color: var(--teal); background: rgba(78,205,196,0.05); }
+
+  /* messages */
+  .messages {
+    min-height: 400px; max-height: 560px; overflow-y: auto;
+    padding: 1.5rem 2rem;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    background: var(--ink);
+    display: flex; flex-direction: column; gap: 1.2rem;
+    scroll-behavior: smooth;
+  }
+  .messages::-webkit-scrollbar { width: 3px; }
+  .messages::-webkit-scrollbar-thumb { background: var(--slate); border-radius: 3px; }
+
+  .empty-state {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; gap: 0.5rem; padding: 3rem 0;
+  }
+  .empty-glyph { font-size: 2rem; opacity: 0.2; }
+  .empty-title { font-family: var(--serif); font-size: 1.1rem; font-style: italic; color: var(--slate); }
+  .empty-hint { font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate); opacity: 0.5; }
+
+  .msg { display: flex; gap: 0.85rem; align-items: flex-start; }
+  .msg.user { flex-direction: row-reverse; }
+  .msg-av {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 0.48rem; margin-top: 3px;
+  }
+  .msg.assistant .msg-av { background: rgba(78,205,196,0.12); border: 1px solid rgba(78,205,196,0.25); color: var(--teal); }
+  .msg.user      .msg-av { background: rgba(201,168,76,0.1);  border: 1px solid rgba(201,168,76,0.22); color: var(--gold); }
+
+  .msg-body { max-width: 82%; }
+  .msg-bubble {
+    padding: 0.85rem 1.1rem; border-radius: 10px;
+    font-size: 0.9rem; line-height: 1.7;
+  }
+  .msg.assistant .msg-bubble {
+    background: var(--mist); border: 1px solid var(--border);
+    color: var(--pale); border-radius: 4px 10px 10px 10px;
+  }
+  .msg.user .msg-bubble {
+    background: rgba(201,168,76,0.07); border: 1px solid rgba(201,168,76,0.18);
+    color: var(--pale); border-radius: 10px 4px 10px 10px;
+  }
+  .msg-bubble p { margin-bottom: 0.55rem; }
+  .msg-bubble p:last-child { margin-bottom: 0; }
+  .msg-bubble strong { color: var(--white); font-weight: 400; }
+  .msg-bubble em { color: var(--gold-lt); }
+
+  /* typing */
+  .typing { display: none; }
+  .typing.show { display: flex; }
+  .typing-dots { display: flex; gap: 4px; align-items: center; padding: 0.6rem 0; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); opacity: 0.35; animation: pulse 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%,60%,100%{opacity:0.35;transform:scale(1)} 30%{opacity:1;transform:scale(1.3)} }
+
+  /* input */
+  .input-area {
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--border); border-top: 1px solid rgba(255,255,255,0.04);
+    border-radius: 0 0 14px 14px; background: var(--mist);
+    display: flex; gap: 0.6rem; align-items: flex-end;
+  }
+  .input-field {
+    flex: 1; background: var(--deep); border: 1px solid var(--border);
+    border-radius: 9px; padding: 0.7rem 1rem; color: var(--white);
+    font-family: var(--sans); font-size: 0.9rem; font-weight: 300;
+    line-height: 1.5; resize: none; outline: none;
+    min-height: 44px; max-height: 130px; transition: border-color 0.2s;
+  }
+  .input-field:focus { border-color: rgba(78,205,196,0.35); }
+  .input-field::placeholder { color: var(--slate); }
+  .send-btn {
+    width: 42px; height: 42px; flex-shrink: 0;
+    background: var(--teal); color: var(--ink); border: none;
+    border-radius: 9px; font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .send-btn:hover { background: var(--teal-dk); }
+  .send-btn:disabled { background: var(--slate); opacity: 0.4; cursor: not-allowed; }
+
+  .error-bar {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: #e06c6c; padding: 0.5rem 1rem;
+    background: rgba(224,108,108,0.07); border: 1px solid rgba(224,108,108,0.18);
+    border-radius: 6px; margin-top: 0.4rem; display: none;
+  }
+  .error-bar.show { display: block; }
+
+  .widget-foot {
+    margin-top: 1rem; text-align: center;
+    font-family: var(--mono); font-size: 0.5rem;
+    letter-spacing: 0.08em; color: var(--slate);
+  }
+  .widget-foot a { color: var(--slate); border-bottom: 1px solid var(--slate); text-decoration: none; }
+  .widget-foot a:hover { color: var(--silver); }
+
+  @media(max-width:600px) {
+    .widget-header { padding: 1.5rem 1.2rem 1.2rem; }
+    .suggestions { padding: 0.7rem 1.2rem; }
+    .messages { padding: 1.2rem; max-height: 440px; }
+    .input-area { padding: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Aquariu<em>OS</em></a>
+  <a class="nav-back" href="aquariuos.html">← Full Architecture</a>
+</nav>
+
+<div class="widget">
+  <div class="widget-header">
+    <span class="header-eyebrow">Project 2222 · The Steward · Prototype</span>
+    <h1 class="header-title">The <em>Steward</em></h1>
+    <p class="header-sub">The Steward is AquariuOS's personal navigator — the interface that makes the architecture legible without losing you in complexity. This is its earliest form. Ask it anything about the system, the tools, or whether any of this is relevant to your life.</p>
+  </div>
+
+  <div class="suggestions" id="suggestions">
+    <span class="suggestions-label">Where would you like to start?</span>
+    <button class="sugg-btn" onclick="ask(this)">What is AquariuOS?</button>
+    <button class="sugg-btn" onclick="ask(this)">How does the Reality Check work?</button>
+    <button class="sugg-btn" onclick="ask(this)">Can this help with a custody dispute?</button>
+    <button class="sugg-btn" onclick="ask(this)">What are Coherence Markers?</button>
+    <button class="sugg-btn" onclick="ask(this)">Is this a company?</button>
+    <button class="sugg-btn" onclick="ask(this)">What's the Witness system?</button>
+    <button class="sugg-btn" onclick="ask(this)">How is this different from a diary?</button>
+    <button class="sugg-btn" onclick="ask(this)">Can I use this as evidence in court?</button>
+  </div>
+
+  <div class="messages" id="messages">
+    <div class="empty-state" id="emptyState">
+      <div class="empty-glyph">◎</div>
+      <div class="empty-title">No question is too simple</div>
+      <div class="empty-hint">Tap a suggestion above or type your own</div>
+    </div>
+  </div>
+
+  <div class="input-area">
+    <textarea class="input-field" id="inputField"
+      placeholder="Ask anything about AquariuOS..."
+      rows="1"
+      onkeydown="handleKey(event)"
+      oninput="resize(this)"></textarea>
+    <button class="send-btn" id="sendBtn" onclick="send()">↑</button>
+  </div>
+  <div class="error-bar" id="errorBar"></div>
+
+  <div class="widget-foot" style="text-align:center;margin-top:1rem;font-family:var(--mono);font-size:0.5rem;letter-spacing:0.08em;color:var(--slate);">This is a primitive prototype of the Steward described in the AquariuOS architecture. It knows the system. It does not yet know you. &nbsp;·&nbsp; 
+    Answers based on AquariuOS documentation · Not a substitute for legal advice ·
+    <a href="reality-check.html">Try the Reality Check →</a>
+  </div>
+</div>
+
+<script>
+var chatHistory = [];
+var loading = false;
+
+function resize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 130) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+}
+
+function ask(btn) {
+  document.getElementById('inputField').value = btn.textContent;
+  document.getElementById('suggestions').style.display = 'none';
+  send();
+}
+
+function fmt(text) {
+  return text.split('\n\n').filter(p => p.trim()).map(p => {
+    return '<p>' + p
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/\n/g, '<br>') + '</p>';
+  }).join('');
+}
+
+function addMsg(role, content) {
+  var c = document.getElementById('messages');
+  var e = document.getElementById('emptyState');
+  if (e) e.remove();
+  var t = document.getElementById('typingEl');
+  if (t) t.remove();
+  var av = role === 'assistant' ? 'AQ' : 'YOU';
+  var el = document.createElement('div');
+  el.className = 'msg ' + role;
+  el.innerHTML = '<div class="msg-av">' + av + '</div><div class="msg-body"><div class="msg-bubble">' + fmt(content) + '</div></div>';
+  c.appendChild(el);
+  c.scrollTop = c.scrollHeight;
+}
+
+function showTyping() {
+  var c = document.getElementById('messages');
+  var e = document.getElementById('emptyState');
+  if (e) e.remove();
+  var el = document.createElement('div');
+  el.id = 'typingEl'; el.className = 'msg assistant typing show';
+  el.innerHTML = '<div class="msg-av">AQ</div><div class="msg-body"><div class="typing-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>';
+  c.appendChild(el);
+  c.scrollTop = c.scrollHeight;
+}
+
+function setErr(msg) {
+  var el = document.getElementById('errorBar');
+  if (msg) { el.textContent = msg; el.classList.add('show'); }
+  else el.classList.remove('show');
+}
+
+async function send() {
+  if (loading) return;
+  var input = document.getElementById('inputField');
+  var text = input.value.trim();
+  if (!text) return;
+  setErr('');
+  input.value = ''; input.style.height = '';
+  document.getElementById('sendBtn').disabled = true;
+  loading = true;
+  addMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  showTyping();
+  try {
+    var res = await fetch('/.netlify/functions/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory }),
+    });
+    var data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    addMsg('assistant', data.reply);
+    chatHistory.push({ role: 'assistant', content: data.reply });
+  } catch(err) {
+    var t = document.getElementById('typingEl');
+    if (t) t.remove();
+    setErr(err.message || 'Something went wrong. Please try again.');
+    chatHistory.pop();
+    input.value = text;
+  } finally {
+    loading = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+  }
+}
+</script>
+</body>
+</html>
