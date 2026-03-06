@@ -112,7 +112,7 @@ exports.handler = async function(event, context) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001', // fast and cheap for a chat widget
+        model: 'claude-haiku-4-5', // fast and cheap for a chat widget
         max_tokens: 600,
         system: SYSTEM_PROMPT,
         messages: messages.slice(-10), // keep last 10 turns to manage cost
