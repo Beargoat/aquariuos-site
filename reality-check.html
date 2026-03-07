@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Reality Check · Six-Field Log — AquariuOS</title>
+<meta name="description" content="A 5–10 minute interactive ritual to check what's really happening. Use when you feel confused, gaslit, pressured, or stuck in a loop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&family=DM+Mono:wght@300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #080f18;
+    --mist:       #0b1520;
+    --navy:       #0d1e2e;
+    --teal:       #4ecdc4;
+    --gold:       #c9a84c;
+    --gold-light: #e2c47a;
+    --white:      #f4f0e8;
+    --pale:       #ccc8be;
+    --silver:     #8a9ab0;
+    --slate:      #4a5568;
+    --serif:      'Cormorant Garamond', Georgia, serif;
+    --sans:       'Outfit', sans-serif;
+    --mono:       'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink); color: var(--pale);
+    font-family: var(--sans); font-weight: 300;
+    line-height: 1.7; min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2.5rem;
+    background: rgba(8,15,24,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05); z-index: 100;
+  }
+  .nav-logo { font-family: var(--serif); font-size: 1rem; color: var(--white); text-decoration: none; }
+  .nav-logo span { font-style: italic; color: var(--silver); font-size: 0.8rem; }
+  .nav-links { display: flex; gap: 1rem; align-items: center; }
+  .nav-link { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); text-decoration: none; transition: color 0.2s; }
+  .nav-link:hover { color: var(--gold); }
+  .nav-cta { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 1px solid rgba(201,168,76,0.4); padding: 0.4rem 0.9rem; border-radius: 2px; transition: all 0.2s; }
+  .nav-cta:hover { background: rgba(201,168,76,0.1); }
+
+  /* PROGRESS */
+  .progress-bar { height: 2px; background: rgba(255,255,255,0.06); position: sticky; top: 52px; z-index: 99; }
+  .progress-fill { height: 100%; background: var(--gold); transition: width 0.4s ease; width: 0%; }
+
+  /* HERO */
+  .hero { padding: 5rem 2rem 3rem; text-align: center; background: linear-gradient(180deg,#060d18 0%,var(--ink) 100%); border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .hero-label { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+  .hero h1 { font-family: var(--serif); font-size: clamp(2rem,5vw,3.8rem); font-weight: 300; color: var(--white); line-height: 1.15; margin-bottom: 1rem; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-size: 0.92rem; color: var(--silver); max-width: 500px; margin: 0 auto 0.6rem; line-height: 1.8; }
+  .hero-time { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 2rem; }
+  .hero-start { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 0.85rem 2.2rem; border-radius: 2px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; text-decoration: none; display: inline-block; }
+  .hero-start:hover { background: var(--gold-light); }
+
+  /* WHY IT WORKS */
+  .why-section {
+    background: var(--mist);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 3.5rem 2rem;
+  }
+  .why-inner {
+    max-width: 720px; margin: 0 auto;
+  }
+  .why-intro-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; display: block;
+  }
+  .why-intro-heading {
+    font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 300; color: var(--white); line-height: 1.3; margin-bottom: 0.8rem;
+  }
+  .why-intro-heading em { font-style: italic; color: var(--gold-light); }
+  .why-intro-body {
+    font-size: 0.9rem; color: var(--silver); line-height: 1.85;
+    max-width: 600px; margin-bottom: 2.5rem;
+  }
+  .why-intro-body strong { color: var(--pale); font-weight: 400; }
+
+  .why-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 2rem;
+  }
+  .why-card {
+    background: var(--ink); padding: 1.6rem 1.5rem;
+    transition: background 0.2s;
+  }
+  .why-card:hover { background: #0a1828; }
+  .why-card-icon {
+    font-size: 1.1rem; margin-bottom: 0.7rem; display: block;
+  }
+  .why-card-title {
+    font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--pale); margin-bottom: 0.5rem;
+  }
+  .why-card-body {
+    font-size: 0.82rem; color: var(--silver); line-height: 1.65;
+  }
+  .why-card-body strong { color: var(--pale); font-weight: 400; }
+
+  .why-court {
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px;
+    background: rgba(201,168,76,0.04);
+    padding: 1.8rem 2rem;
+  }
+  .why-court-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: block;
+  }
+  .why-court-heading {
+    font-family: var(--serif); font-size: 1.25rem; font-weight: 300;
+    color: var(--white); margin-bottom: 1rem; line-height: 1.3;
+  }
+  .why-court-items { display: flex; flex-direction: column; gap: 0.9rem; }
+  .why-court-item { display: flex; gap: 0.9rem; align-items: flex-start; }
+  .why-court-num {
+    font-family: var(--mono); font-size: 0.6rem; color: var(--gold);
+    margin-top: 0.15rem; flex-shrink: 0; width: 1.2rem;
+  }
+  .why-court-text { font-size: 0.85rem; color: var(--silver); line-height: 1.7; }
+  .why-court-text strong { color: var(--pale); font-weight: 400; }
+
+  /* CLAIM */
+  .claim-section { margin-bottom: 2.5rem; opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .claim-section.visible { opacity: 1; transform: none; }
+  .claim-label-text { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; display: block; }
+  .claim-heading { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--white); margin-bottom: 0.4rem; line-height: 1.3; }
+  .claim-heading em { font-style: italic; color: var(--gold-light); }
+  .claim-hint { font-size: 0.8rem; color: var(--slate); font-style: italic; margin-bottom: 0.8rem; }
+  .claim-input { width: 100%; background: var(--mist); border: 1px solid rgba(255,255,255,0.1); border-radius: 3px; padding: 1rem 1.2rem; color: var(--white); font-family: var(--serif); font-size: 1.05rem; line-height: 1.5; resize: vertical; min-height: 70px; transition: border-color 0.2s, background 0.2s; outline: none; }
+  .claim-input:focus { border-color: rgba(201,168,76,0.5); background: #0d1e2e; }
+  .claim-input::placeholder { color: var(--slate); font-style: italic; }
+
+  /* STEPS */
+  .step { margin-bottom: 1.5px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .step.visible { opacity: 1; transform: none; }
+  .step-header { display: grid; grid-template-columns: 68px 1fr; background: var(--mist); border-left: 2px solid transparent; transition: border-color 0.3s, background 0.3s; cursor: pointer; }
+  .step.active .step-header { border-left-color: var(--gold); background: #0d1e2e; }
+  .step.completed .step-header { border-left-color: var(--teal); }
+  .step-num-col { display: flex; align-items: flex-start; justify-content: center; padding: 1.4rem 0 0; border-right: 1px solid rgba(255,255,255,0.05); }
+  .step-num { font-family: var(--serif); font-size: 2rem; font-weight: 300; color: rgba(201,168,76,0.2); line-height: 1; transition: color 0.3s; }
+  .step.active .step-num { color: rgba(201,168,76,0.5); }
+  .step.completed .step-num { color: rgba(78,205,196,0.4); }
+  .step-meta { padding: 1.4rem 1.6rem 1.4rem 1.3rem; }
+  .step-domain { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.25rem; }
+  .step-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 300; color: var(--white); line-height: 1.25; }
+  .step-title em { font-style: italic; color: var(--gold-light); }
+  .step-chevron { float: right; font-size: 0.65rem; color: var(--slate); margin-top: 0.2rem; transition: transform 0.3s; display: inline-block; }
+  .step.active .step-chevron { transform: rotate(180deg); }
+  .step-check { display: none; float: right; font-size: 0.65rem; color: var(--teal); font-family: var(--mono); margin-top: 0.2rem; }
+  .step.completed .step-check { display: inline; }
+  .step.completed .step-chevron { display: none; }
+
+  /* STEP BODY */
+  .step-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; background: var(--mist); }
+  .step.active .step-body { max-height: 1000px; }
+  .step-body-inner { padding: 0 1.6rem 1.8rem 4.2rem; }
+  .step-question { font-size: 0.87rem; color: var(--pale); line-height: 1.8; margin-bottom: 0.5rem; }
+  .step-prompt { font-size: 0.81rem; color: var(--silver); font-style: italic; line-height: 1.7; margin-bottom: 0.8rem; }
+  .step-action { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.9rem; }
+
+  /* INPUTS */
+  .step-textarea { width: 100%; background: rgba(8,15,24,0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 3px; padding: 0.85rem 1rem; color: var(--white); font-family: var(--sans); font-size: 0.88rem; line-height: 1.6; resize: vertical; min-height: 85px; transition: border-color 0.2s, background 0.2s; outline: none; font-weight: 300; }
+  .step-textarea:focus { border-color: rgba(201,168,76,0.4); background: rgba(13,30,46,0.8); }
+  .step-textarea::placeholder { color: var(--slate); }
+
+  /* CHOICE BUTTONS */
+  .choice-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .choice-btn { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.9rem; border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; background: transparent; color: var(--silver); cursor: pointer; transition: all 0.2s; }
+  .choice-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .choice-btn.selected { border-color: var(--teal); color: var(--teal); background: rgba(78,205,196,0.08); }
+
+  /* VALUE TAGS */
+  .values-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .value-tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.06em; padding: 0.3rem 0.7rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--silver); cursor: pointer; transition: all 0.2s; }
+  .value-tag:hover { border-color: var(--gold); color: var(--gold); }
+  .value-tag.selected { border-color: var(--teal); color: var(--teal); background: rgba(78,205,196,0.08); }
+
+  /* IMPACT */
+  .impact-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .impact-btn { font-family: var(--mono); font-size: 0.65rem; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--silver); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+  .impact-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .impact-btn.selected { border-color: var(--teal); color: var(--ink); background: var(--teal); }
+
+  /* NEXT BTN */
+  .step-next { font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; border: 1px solid rgba(201,168,76,0.4); color: var(--gold); padding: 0.5rem 1.2rem; border-radius: 2px; cursor: pointer; transition: all 0.2s; margin-top: 0.9rem; }
+  .step-next:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+
+  /* REFLECTION */
+  .reflection { margin-top: 3rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.06); opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .reflection.visible { opacity: 1; transform: none; }
+  .reflection-heading { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; color: var(--white); margin-bottom: 0.4rem; }
+  .reflection-heading em { font-style: italic; color: var(--gold-light); }
+  .reflection-sub { font-size: 0.85rem; color: var(--silver); margin-bottom: 2rem; }
+  .refl-item { margin-bottom: 1.4rem; }
+  .refl-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.45rem; display: block; }
+  .refl-textarea { width: 100%; background: var(--mist); border: 1px solid rgba(255,255,255,0.08); border-radius: 3px; padding: 0.85rem 1rem; color: var(--white); font-family: var(--sans); font-size: 0.88rem; line-height: 1.6; resize: vertical; min-height: 65px; transition: border-color 0.2s, background 0.2s; outline: none; font-weight: 300; }
+  .refl-textarea:focus { border-color: rgba(201,168,76,0.4); background: #0d1e2e; }
+  .refl-textarea::placeholder { color: var(--slate); }
+
+  /* DOWNLOAD */
+  .download-section { margin-top: 2.5rem; padding: 2.5rem; background: var(--mist); border-radius: 3px; border: 1px solid rgba(201,168,76,0.15); text-align: center; opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+  .download-section.visible { opacity: 1; transform: none; }
+  .dl-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+  .dl-heading { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; color: var(--white); margin-bottom: 0.4rem; }
+  .dl-sub { font-size: 0.82rem; color: var(--silver); margin-bottom: 1.5rem; }
+  .dl-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+  .btn-gold { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 0.75rem 1.8rem; border-radius: 2px; border: none; cursor: pointer; font-weight: 500; transition: background 0.2s; text-decoration: none; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-ghost-sm { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); color: var(--pale); padding: 0.75rem 1.8rem; border-radius: 2px; background: transparent; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+  .btn-ghost-sm:hover { border-color: var(--pale); color: var(--white); }
+
+  /* CLOSING */
+  .closing { margin-top: 2.5rem; text-align: center; padding-bottom: 2rem; opacity: 0; transition: opacity 0.5s; }
+  .closing.visible { opacity: 1; }
+  .closing-quote { font-family: var(--serif); font-size: 1.15rem; font-weight: 300; color: var(--pale); font-style: italic; line-height: 1.5; margin-bottom: 0.5rem; }
+  .closing-body { font-size: 0.8rem; color: var(--slate); line-height: 1.7; }
+  .closing-body a { color: var(--silver); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 1.8rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-left { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; color: var(--slate); }
+  .footer-links { list-style: none; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* EXAMPLE TABS */
+  .ex-tabs {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .ex-tab {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.45rem 1rem;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 2px;
+    background: transparent; color: var(--silver); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ex-tab:hover { border-color: var(--teal); color: var(--teal); }
+  .ex-tab.active {
+    border-color: var(--teal); color: var(--teal);
+    background: rgba(78,205,196,0.08);
+  }
+  .ex-panel { display: none; }
+  .ex-panel.active { display: block; }
+
+  /* EXAMPLE SECTION */
+  .example-section {
+    background: var(--ink);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 3.5rem 2rem;
+  }
+  .example-inner { max-width: 720px; margin: 0 auto; }
+  .example-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; display: block;
+  }
+  .example-heading {
+    font-family: var(--serif); font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-weight: 300; color: var(--white); line-height: 1.3; margin-bottom: 0.6rem;
+  }
+  .example-heading em { font-style: italic; color: var(--gold-light); }
+  .example-intro {
+    font-size: 0.88rem; color: var(--silver); line-height: 1.8; margin-bottom: 2rem;
+    max-width: 580px;
+  }
+  .example-scenario {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .example-entries { display: flex; flex-direction: column; gap: 1px; }
+  .example-entry {
+    display: grid; grid-template-columns: 200px 1fr;
+    background: var(--mist);
+    transition: background 0.2s;
+  }
+  .example-entry:hover { background: #0d1e2e; }
+  .example-entry-label {
+    padding: 1.1rem 1.2rem;
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+  .example-entry-field {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.25rem;
+  }
+  .example-entry-name {
+    font-family: var(--serif); font-size: 0.95rem; font-weight: 300;
+    color: var(--pale); line-height: 1.2;
+  }
+  .example-entry-name em { font-style: italic; color: var(--gold-light); }
+  .example-entry-content { padding: 1.1rem 1.4rem; }
+  .example-entry-q {
+    font-size: 0.75rem; color: var(--slate); font-style: italic;
+    margin-bottom: 0.4rem; line-height: 1.5;
+  }
+  .example-entry-a {
+    font-size: 0.88rem; color: var(--white); line-height: 1.65;
+  }
+  .example-entry-a strong { color: var(--gold-light); font-weight: 400; }
+  .example-note {
+    margin-top: 1.2rem; padding: 1rem 1.2rem;
+    border-left: 2px solid rgba(78,205,196,0.3);
+    font-size: 0.82rem; color: var(--silver); line-height: 1.7;
+    font-style: italic;
+  }
+  @media (max-width: 640px) {
+    .example-entry { grid-template-columns: 1fr; }
+    .example-entry-label { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.6rem; }
+  }
+  @media print {
+    nav, .progress-bar, .hero-start, .step-next, .step-chevron, .download-section, footer, .closing { display: none !important; }
+    body { background: white; color: #111; }
+    .hero { background: white; padding: 1rem; border: none; }
+    .hero h1, .claim-heading, .step-title, .reflection-heading { color: #111; }
+    .hero-sub, .claim-hint, .step-question, .step-prompt, .reflection-sub { color: #555; }
+    .step, .claim-section, .reflection { opacity: 1 !important; transform: none !important; }
+    .step-body { max-height: none !important; }
+    .step-header { background: #f5f5f5; border-left: 2px solid #ccc; }
+    .step-textarea, .claim-input, .refl-textarea { border: none; border-bottom: 1px solid #ccc; background: transparent; color: #111; padding: 0.2rem 0; }
+    .choice-btn.selected, .value-tag.selected { border-color: #333; color: #333; background: #eee; }
+    .impact-btn.selected { background: #333; color: white; border-color: #333; }
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.2rem; }
+    .form-wrap { padding: 2rem 1.2rem 4rem; }
+    .step-body-inner { padding: 0 1rem 1.5rem 3.2rem; }
+    footer { padding: 1.5rem 1.2rem; flex-direction: column; }
+  }
+
+  /* SEED BRIDGE (hero connective tissue) */
+  .seed-bridge {
+    margin-top: 2rem; padding: 1.2rem 1.6rem;
+    border: 1px solid rgba(78,205,196,0.2);
+    border-radius: 3px; background: rgba(78,205,196,0.04);
+    max-width: 520px; margin-left: auto; margin-right: auto;
+    text-align: left;
+  }
+  .seed-bridge-label {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; display: block;
+  }
+  .seed-bridge-text {
+    font-size: 0.84rem; color: var(--silver); line-height: 1.75;
+  }
+  .seed-bridge-text strong { color: var(--pale); font-weight: 400; }
+  .seed-bridge-link {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.08em;
+    color: var(--teal); text-decoration: none; display: inline-block;
+    margin-top: 0.6rem; border-bottom: 1px solid rgba(78,205,196,0.3);
+    transition: border-color 0.2s;
+  }
+  .seed-bridge-link:hover { border-color: var(--teal); }
+
+  /* WHAT'S NEXT SECTION */
+  .next-section {
+    background: var(--mist);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 4rem 2rem;
+  }
+  .next-inner { max-width: 720px; margin: 0 auto; }
+  .next-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; display: block;
+  }
+  .next-heading {
+    font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 300; color: var(--white); line-height: 1.25; margin-bottom: 1rem;
+  }
+  .next-heading em { font-style: italic; color: var(--gold-light); }
+  .next-body {
+    font-size: 0.9rem; color: var(--silver); line-height: 1.85;
+    max-width: 600px; margin-bottom: 2.5rem;
+  }
+  .next-body strong { color: var(--pale); font-weight: 400; }
+  .next-body a { color: var(--teal); text-decoration: none; border-bottom: 1px solid rgba(78,205,196,0.3); }
+  .next-body a:hover { border-color: var(--teal); }
+
+  .next-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px; background: rgba(255,255,255,0.04);
+    margin-bottom: 3rem;
+  }
+  .next-step-card {
+    background: var(--ink); padding: 1.5rem 1.4rem;
+  }
+  .next-step-num {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em;
+    color: var(--gold); margin-bottom: 0.5rem; display: block;
+  }
+  .next-step-title {
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 300;
+    color: var(--white); margin-bottom: 0.4rem; line-height: 1.3;
+  }
+  .next-step-title em { font-style: italic; color: var(--gold-light); }
+  .next-step-body {
+    font-size: 0.8rem; color: var(--silver); line-height: 1.65;
+  }
+  .next-step-status {
+    font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 0.6rem; display: inline-block;
+    padding: 0.2rem 0.5rem; border-radius: 2px;
+  }
+  .status-live { color: var(--teal); border: 1px solid rgba(78,205,196,0.3); background: rgba(78,205,196,0.06); }
+  .status-next { color: var(--gold); border: 1px solid rgba(201,168,76,0.3); background: rgba(201,168,76,0.06); }
+  .status-later { color: var(--slate); border: 1px solid rgba(74,85,104,0.4); }
+
+  /* PILOT FORM */
+  .pilot-block {
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 3px; background: rgba(201,168,76,0.04);
+    padding: 2rem 2rem 2.2rem;
+  }
+  .pilot-label {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; display: block;
+  }
+  .pilot-heading {
+    font-family: var(--serif); font-size: 1.35rem; font-weight: 300;
+    color: var(--white); margin-bottom: 0.5rem; line-height: 1.3;
+  }
+  .pilot-sub {
+    font-size: 0.83rem; color: var(--silver); line-height: 1.7; margin-bottom: 1.4rem;
+  }
+  .pilot-questions { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.2rem; }
+  .pilot-q-label {
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 0.35rem; display: block;
+  }
+  .pilot-textarea {
+    width: 100%; background: rgba(8,15,24,0.7);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 3px;
+    padding: 0.75rem 0.9rem; color: var(--white); font-family: var(--sans);
+    font-size: 0.87rem; line-height: 1.6; resize: vertical; min-height: 70px;
+    outline: none; font-weight: 300; transition: border-color 0.2s;
+  }
+  .pilot-textarea:focus { border-color: rgba(201,168,76,0.4); }
+  .pilot-textarea::placeholder { color: var(--slate); }
+  .pilot-input {
+    width: 100%; background: rgba(8,15,24,0.7);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 3px;
+    padding: 0.65rem 0.9rem; color: var(--white); font-family: var(--mono);
+    font-size: 0.82rem; outline: none; transition: border-color 0.2s;
+  }
+  .pilot-input:focus { border-color: rgba(201,168,76,0.4); }
+  .pilot-input::placeholder { color: var(--slate); }
+  .pilot-submit {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em;
+    text-transform: uppercase; background: var(--gold); color: var(--ink);
+    padding: 0.75rem 1.8rem; border-radius: 2px; border: none;
+    cursor: pointer; font-weight: 500; transition: background 0.2s;
+  }
+  .pilot-submit:hover { background: var(--gold-light); }
+  .pilot-confirm {
+    display: none; font-family: var(--mono); font-size: 0.72rem;
+    color: var(--teal); letter-spacing: 0.06em; margin-top: 0.8rem;
+  }
+  .pilot-note {
+    font-size: 0.75rem; color: var(--slate); margin-top: 0.8rem; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">AquariuOS <span>/ Reality Check</span></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="aquariuos.html" class="nav-link">Architecture</a>
+    <a href="reality-check.pdf" download class="nav-cta">Print PDF ↓</a>
+  </div>
+</nav>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<section class="hero">
+  <div class="hero-label">The Reality Check · Six-Field Log · Interactive</div>
+  <h1>What's <em>actually</em><br>happening right now?</h1>
+  <p class="hero-sub">A 5–10 minute ritual to check what's really going on. Your answers stay on your device — nothing is sent anywhere.</p>
+  <div class="hero-time">⏱ 5–10 minutes &nbsp;·&nbsp; Private &nbsp;·&nbsp; Download your session when done</div>
+
+  <div class="seed-bridge">
+    <span class="seed-bridge-label">What this is · and what it connects to</span>
+    <p class="seed-bridge-text">These six fields are the first usable layer of <strong>AquariuOS</strong> — a larger architecture for shared reality. Each field maps directly to a Coherence Marker: the same framework that, at scale, would let two people in a dispute compare structured accounts of the same event. Right now, it runs in your head, on paper, alone. That's the point. <strong>The seed of any system that helps people understand each other is a single person learning to see their own reality clearly.</strong></p>
+    <a href="aquariuos.html" class="seed-bridge-link">Read the full architecture →</a>
+  </div>
+
+  <a href="#begin" class="hero-start" onclick="startCheck()" style="margin-top:1.5rem;">Begin the Check →</a>
+</section>
+
+<!-- WHY IT WORKS OVER TIME -->
+<section class="why-section">
+  <div class="why-inner">
+
+    <span class="why-intro-label">Why This Works · Especially Over Time</span>
+    <h2 class="why-intro-heading">One session creates clarity.<br><em>Repeated sessions create proof.</em></h2>
+    <p class="why-intro-body">The real power of this check isn't in doing it once — it's in doing it regularly, over weeks and months. Each dated session becomes a record of your reality as it happened. <strong>Not as you remember it. Not as someone else reframes it later. As it was, at that moment, in your own words.</strong></p>
+
+    <div class="why-cards">
+      <div class="why-card">
+        <span class="why-card-icon">🔒</span>
+        <div class="why-card-title">Stops Gaslighting Cold</div>
+        <div class="why-card-body">When someone tells you "that never happened" or "you're too sensitive," you have dated, structured entries that say otherwise. <strong>It's very hard to argue with your own handwriting from six months ago.</strong></div>
+      </div>
+      <div class="why-card">
+        <span class="why-card-icon">📈</span>
+        <div class="why-card-title">Reveals Real Patterns</div>
+        <div class="why-card-body">One bad day is noise. Twelve entries showing the same trigger, the same dynamic, the same outcome? <strong>That's signal.</strong> You start to see your life more clearly than anyone else can describe it to you.</div>
+      </div>
+      <div class="why-card">
+        <span class="why-card-icon">🧠</span>
+        <div class="why-card-title">Rebuilds Self-Trust</div>
+        <div class="why-card-body">The biggest win is quieter: <strong>you stop doubting yourself.</strong> When the facts are written down, the attempts to rewrite them stop working. You become a reliable witness to your own life.</div>
+      </div>
+    </div>
+
+    <!-- COURT / LEGAL -->
+    <div class="why-court">
+      <span class="why-court-label">If It Ever Goes Further · Why This Holds Up</span>
+      <div class="why-court-heading">Judges hate drama. They love data.</div>
+      <div class="why-court-items">
+        <div class="why-court-item">
+          <div class="why-court-num">01</div>
+          <div class="why-court-text"><strong>Timestamps matter.</strong> A digitally timestamped session — or a dated journal entry — proves you didn't construct a narrative six months later. It is a contemporaneous record of your reality as it happened. Courts weight that heavily.</div>
+        </div>
+        <div class="why-court-item">
+          <div class="why-court-num">02</div>
+          <div class="why-court-text"><strong>Separating emotion from fact makes you credible.</strong> By walking through the six fields — raw data first, interpretation later — you present yourself as a calm, structured, objective witness. That is the opposite of what the other side will claim you are.</div>
+        </div>
+        <div class="why-court-item">
+          <div class="why-court-num">03</div>
+          <div class="why-court-text"><strong>Psychological anchoring protects your testimony.</strong> People who have been gaslit often contradict themselves under pressure because their memory has been repeatedly destabilized. Regular entries mean your account stays consistent — because it was never constructed. It was observed.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WORKED EXAMPLE -->
+<section class="example-section">
+  <div class="example-inner">
+
+    <span class="example-label">See It In Action · Worked Examples</span>
+    <h2 class="example-heading">What a completed check <em>actually looks like</em></h2>
+    <p class="example-intro">If you're unsure how to fill this out, choose a scenario below. Notice how each field captures something a camera, a witness, or a court could verify — not just how it felt.</p>
+
+    <div class="ex-tabs">
+      <button class="ex-tab active"  onclick="showExample('custody',    this)">Custody Exchange</button>
+      <button class="ex-tab"         onclick="showExample('workplace',  this)">Workplace Credit</button>
+      <button class="ex-tab"         onclick="showExample('gaslighting',this)">Relationship Gaslighting</button>
+      <button class="ex-tab"         onclick="showExample('self',       this)">Inner Shame Spiral</button>
+    </div>
+
+    <div id="exampleDisplay">
+<div class="example-scenario">Scenario: A custody exchange that felt hostile and confusing</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Situation</div><div class="example-entry-name">Initial <em>description</em></div></div><div class="example-entry-content"><div class="example-entry-q">What happened?</div><div class="example-entry-a">&#8220;The handoff tonight felt aggressive and I don&#8217;t know if my account will hold up.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 1 · Observation</div><div class="example-entry-name"><em>The Facts (camera-level)</em></div></div><div class="example-entry-content"><div class="example-entry-q">What would a camera record?</div><div class="example-entry-a"><strong>&#8220;He arrived at 6:15 PM. It was raining. The children were visibly upset. The exchange lasted four minutes. No physical contact was made. He drove away at 6:19 PM.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 2 · Interior</div><div class="example-entry-name"><em>Your Intent</em></div></div><div class="example-entry-content"><div class="example-entry-q">What were you trying to achieve?</div><div class="example-entry-a"><strong>&#8220;I wanted to complete the handoff in under two minutes and avoid verbal escalation. I said nothing beyond the agreed script.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 3 · The Frame</div><div class="example-entry-name"><em>Context</em></div></div><div class="example-entry-content"><div class="example-entry-q">What was the environment?</div><div class="example-entry-a"><strong>&#8220;Driveway of the agreed pickup address, 6:15 PM, raining. Both children present. No other adults on property. Street visible from road.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 4 · The Record</div><div class="example-entry-name"><em>Evidence</em></div></div><div class="example-entry-content"><div class="example-entry-q">What exists outside your memory?</div><div class="example-entry-a"><strong>Texts/Email &middot; Witness.</strong> &#8220;Text sent at 6:00 PM confirming pickup time and location. A neighbor was outside and observed the car arrive. Exchange location matches the court order.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 5 · The Mirror</div><div class="example-entry-name"><em>Their View</em></div></div><div class="example-entry-content"><div class="example-entry-q">What do they claim happened?</div><div class="example-entry-a"><strong>&#8220;He said nothing directly. His attorney later alleged I &#8216;created a hostile environment&#8217; with no specifics. His likely position: I am rigid about scheduling.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 6 · The Sync</div><div class="example-entry-name"><em>Resolution / Status</em></div></div><div class="example-entry-content"><div class="example-entry-q">Was anything resolved?</div><div class="example-entry-a"><strong>Unresolved &middot; Documenting pattern.</strong> &#8220;Third late arrival in six weeks. Forwarding this entry and the 6:00 PM text to my attorney tonight.&#8221;</div></div></div>
+      </div>
+      <div class="example-note">The initial feeling was &#8220;hostile and confusing.&#8221; The documented record: a 15-minute late arrival in rain, confirmed by a timestamped text and a neighbor witness, no physical contact, no escalating language on my side. That is the difference between a feeling and evidence. Both are real. Only one holds up.</div>
+    
+
+  </div>
+</section>
+
+  </div>
+</section>
+
+<!-- EXAMPLE DATA: hidden templates -->
+<div id="exdata-custody"    style="display:none"><div class="example-scenario">Scenario: A custody exchange that felt hostile and confusing</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Situation</div><div class="example-entry-name">Initial <em>description</em></div></div><div class="example-entry-content"><div class="example-entry-q">What happened?</div><div class="example-entry-a">&#8220;The handoff tonight felt aggressive and I don&#8217;t know if my account will hold up.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 1 · Observation</div><div class="example-entry-name"><em>The Facts (camera-level)</em></div></div><div class="example-entry-content"><div class="example-entry-q">What would a camera record?</div><div class="example-entry-a"><strong>&#8220;He arrived at 6:15 PM. It was raining. The children were visibly upset. The exchange lasted four minutes. No physical contact was made. He drove away at 6:19 PM.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 2 · Interior</div><div class="example-entry-name"><em>Your Intent</em></div></div><div class="example-entry-content"><div class="example-entry-q">What were you trying to achieve?</div><div class="example-entry-a"><strong>&#8220;I wanted to complete the handoff in under two minutes and avoid verbal escalation. I said nothing beyond the agreed script.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 3 · The Frame</div><div class="example-entry-name"><em>Context</em></div></div><div class="example-entry-content"><div class="example-entry-q">What was the environment?</div><div class="example-entry-a"><strong>&#8220;Driveway of the agreed pickup address, 6:15 PM, raining. Both children present. No other adults on property. Street visible from road.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 4 · The Record</div><div class="example-entry-name"><em>Evidence</em></div></div><div class="example-entry-content"><div class="example-entry-q">What exists outside your memory?</div><div class="example-entry-a"><strong>Texts/Email &middot; Witness.</strong> &#8220;Text sent at 6:00 PM confirming pickup time and location. A neighbor was outside and observed the car arrive. Exchange location matches the court order.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 5 · The Mirror</div><div class="example-entry-name"><em>Their View</em></div></div><div class="example-entry-content"><div class="example-entry-q">What do they claim happened?</div><div class="example-entry-a"><strong>&#8220;He said nothing directly. His attorney later alleged I &#8216;created a hostile environment&#8217; with no specifics. His likely position: I am rigid about scheduling.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 6 · The Sync</div><div class="example-entry-name"><em>Resolution / Status</em></div></div><div class="example-entry-content"><div class="example-entry-q">Was anything resolved?</div><div class="example-entry-a"><strong>Unresolved &middot; Documenting pattern.</strong> &#8220;Third late arrival in six weeks. Forwarding this entry and the 6:00 PM text to my attorney tonight.&#8221;</div></div></div>
+      </div>
+      <div class="example-note">The initial feeling was &#8220;hostile and confusing.&#8221; The documented record: a 15-minute late arrival in rain, confirmed by a timestamped text and a neighbor witness, no physical contact, no escalating language on my side. That is the difference between a feeling and evidence. Both are real. Only one holds up.</div>
+    </div>
+<div id="exdata-workplace"  style="display:none"><div class="example-scenario">Scenario: Your manager presented your idea in a meeting without crediting you</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Situation</div><div class="example-entry-name">Initial <em>description</em></div></div><div class="example-entry-content"><div class="example-entry-q">What happened?</div><div class="example-entry-a">&#8220;My manager just took credit for my idea in front of the whole team. But maybe I never said it clearly enough.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 1 · Observation</div><div class="example-entry-name"><em>The Facts (camera-level)</em></div></div><div class="example-entry-content"><div class="example-entry-q">What would a camera record?</div><div class="example-entry-a"><strong>&#8220;At the 10am all-hands, my manager said: &#8216;I&#8217;ve been thinking about restructuring the onboarding flow.&#8217; She presented three points. All three match my Slack message to her on Tuesday at 2:17 PM.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 2 · Interior</div><div class="example-entry-name"><em>Your Intent</em></div></div><div class="example-entry-content"><div class="example-entry-q">What were you trying to achieve?</div><div class="example-entry-a"><strong>&#8220;I wanted to contribute to strategy and be recognized for it. In the meeting I said nothing &#8212; I have stayed silent in similar situations twice before and regretted it.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 3 · The Frame</div><div class="example-entry-name"><em>Context</em></div></div><div class="example-entry-content"><div class="example-entry-q">What was the environment?</div><div class="example-entry-a"><strong>&#8220;All-hands meeting, open office, approximately 30 people present. The original Slack message was a private DM &#8212; two participants only.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 4 · The Record</div><div class="example-entry-name"><em>Evidence</em></div></div><div class="example-entry-content"><div class="example-entry-q">What exists outside your memory?</div><div class="example-entry-a"><strong>Texts/Email.</strong> &#8220;Original Slack thread timestamped Tuesday 2:17 PM containing all three points she presented. Forwarded to my personal email immediately after the meeting &#8212; external timestamp now exists.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 5 · The Mirror</div><div class="example-entry-name"><em>Their View</em></div></div><div class="example-entry-content"><div class="example-entry-q">What do they claim happened?</div><div class="example-entry-a"><strong>&#8220;She said nothing directly. She may not remember the message, or may believe she developed the idea independently. I have not raised it. This is the first documented instance.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 6 · The Sync</div><div class="example-entry-name"><em>Resolution / Status</em></div></div><div class="example-entry-content"><div class="example-entry-q">Was anything resolved?</div><div class="example-entry-a"><strong>Unresolved &middot; Documenting pattern.</strong> &#8220;Third time in eight months. Sending one follow-up after the weekend: &#8216;Wanted to follow up on the onboarding idea I shared Tuesday.&#8217; Keeping the thread as evidence.&#8221;</div></div></div>
+      </div>
+      <div class="example-note">The self-doubt (&#8220;maybe I never said it clearly&#8221;) dissolved the moment Field 1 required going back to the actual Slack thread. The record existed. The doubt was the problem, not the facts. This is exactly what gaslighting &#8212; whether intentional or not &#8212; relies on.</div>
+    </div>
+<div id="exdata-gaslighting"style="display:none"><div class="example-scenario">Scenario: Your partner says &#8220;I never said that&#8221; about a commitment you clearly remember</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Situation</div><div class="example-entry-name">Initial <em>description</em></div></div><div class="example-entry-content"><div class="example-entry-q">What happened?</div><div class="example-entry-a">&#8220;He agreed Thursday to come to my sister&#8217;s dinner Saturday. Tonight he says he never agreed and I&#8217;m &#8216;making things up again.&#8217; Now I&#8217;m questioning my own memory.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 1 · Observation</div><div class="example-entry-name"><em>The Facts (camera-level)</em></div></div><div class="example-entry-content"><div class="example-entry-q">What would a camera record?</div><div class="example-entry-a"><strong>&#8220;Thursday evening, kitchen, approximately 7:30 PM. He said: &#8216;Yeah, I can do Saturday.&#8217; No qualifications. Conversation lasted under two minutes.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 2 · Interior</div><div class="example-entry-name"><em>Your Intent</em></div></div><div class="example-entry-content"><div class="example-entry-q">What were you trying to achieve?</div><div class="example-entry-a"><strong>&#8220;I wanted to confirm the plan so I could tell my sister. I texted her immediately after because I was relieved &#8212; that is not the behavior of someone who misunderstood.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 3 · The Frame</div><div class="example-entry-name"><em>Context</em></div></div><div class="example-entry-content"><div class="example-entry-q">What was the environment?</div><div class="example-entry-a"><strong>&#8220;Thursday evening at home, just the two of us. Normal conversational tone. No distractions noted. Not a rushed or ambiguous exchange.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 4 · The Record</div><div class="example-entry-name"><em>Evidence</em></div></div><div class="example-entry-content"><div class="example-entry-q">What exists outside your memory?</div><div class="example-entry-a"><strong>Texts/Email.</strong> &#8220;Text to my sister timestamped Thursday 7:52 PM: &#8216;He&#8217;s coming Saturday, confirmed.&#8217; Created before any dispute existed. Contemporaneous evidence.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 5 · The Mirror</div><div class="example-entry-name"><em>Their View</em></div></div><div class="example-entry-content"><div class="example-entry-q">What do they claim happened?</div><div class="example-entry-a"><strong>&#8220;He says he never agreed. He used the phrase &#8216;you always do this&#8217; &#8212; implying a pattern of mine, not his. He offered no alternative account of the Thursday conversation.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 6 · The Sync</div><div class="example-entry-name"><em>Resolution / Status</em></div></div><div class="example-entry-content"><div class="example-entry-q">Was anything resolved?</div><div class="example-entry-a"><strong>Unresolved &middot; Documenting pattern.</strong> &#8220;Fourth time in three months a specific commitment has been &#8216;remembered differently.&#8217; Each prior time I had no record. Screenshotting the Thursday text tonight.&#8221;</div></div></div>
+      </div>
+      <div class="example-note">The text to her sister at 7:52 PM is not a convenience &#8212; it is contemporaneous evidence created before any dispute existed. This is the core of the system: your record of reality, made at the time it happened, before anyone had a reason to contest it.</div>
+    </div>
+<div id="exdata-self"       style="display:none"><div class="example-scenario">Scenario: A shame spiral after a missed email &#8212; &#8220;I always mess things up&#8221;</div>
+      <div class="example-entries">
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Situation</div><div class="example-entry-name">Initial <em>description</em></div></div><div class="example-entry-content"><div class="example-entry-q">What happened?</div><div class="example-entry-a">&#8220;I forgot to forward a meeting confirmation and now I&#8217;m spiraling. Is this a real pattern or just a bad week?&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 1 · Observation</div><div class="example-entry-name"><em>The Facts (camera-level)</em></div></div><div class="example-entry-content"><div class="example-entry-q">What would a camera record?</div><div class="example-entry-a"><strong>&#8220;I forgot to forward a meeting confirmation to one client on Tuesday. The meeting still happened. The client rescheduled without complaint. No deliverable was missed.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 2 · Interior</div><div class="example-entry-name"><em>Your Intent</em></div></div><div class="example-entry-content"><div class="example-entry-q">What were you trying to achieve?</div><div class="example-entry-a"><strong>&#8220;I wanted to be reliable and thorough. I have been running on four to five hours of sleep for two weeks. I missed one forward. That is the complete account.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 3 · The Frame</div><div class="example-entry-name"><em>Context</em></div></div><div class="example-entry-content"><div class="example-entry-q">What was the environment?</div><div class="example-entry-a"><strong>&#8220;Tuesday afternoon, four back-to-back meetings. The forward was supposed to happen between sessions two and three. High cognitive load, low sleep.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 4 · The Record</div><div class="example-entry-name"><em>Evidence</em></div></div><div class="example-entry-content"><div class="example-entry-q">What exists outside your memory?</div><div class="example-entry-a"><strong>No external evidence of failure &#8212; but counter-evidence exists.</strong> &#8220;Eleven consecutive deliverables without a miss in the project files. This is the first miss in four months. &#8216;Always&#8217; is a claim that does not survive the record.&#8221;</div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 5 · The Mirror</div><div class="example-entry-name"><em>Their View</em></div></div><div class="example-entry-content"><div class="example-entry-q">What do they claim happened?</div><div class="example-entry-a"><strong>&#8220;The client said nothing critical. The voice saying &#8216;I always mess things up&#8217; is my own, shaped by my father&#8217;s phrase &#8216;you never follow through.&#8217; That voice is not the client, and it is not current evidence.&#8221;</strong></div></div></div>
+        <div class="example-entry"><div class="example-entry-label"><div class="example-entry-field">Field 6 · The Sync</div><div class="example-entry-name"><em>Resolution / Status</em></div></div><div class="example-entry-content"><div class="example-entry-q">Was anything resolved?</div><div class="example-entry-a"><strong>Partial.</strong> &#8220;Sending a brief one-line follow-up to the client tomorrow morning &#8212; not an apology, just a confirmation. Then sleep. The spiral is exhaustion wearing the mask of self-knowledge.&#8221;</div></div></div>
+      </div>
+      <div class="example-note">The word &#8220;always&#8221; did not survive Field 1. One missed forward in eleven deliverables is not a pattern &#8212; it is a data point being recruited into an old story. The six-field check applies the same standard of evidence to the claims we make about ourselves as to anyone else.</div>
+    </div>
+
+<div class="form-wrap" id="formWrap">
+  <!-- CLAIM -->
+  <div class="claim-section visible" id="claimSection">
+    <span class="claim-label-text">Start Here — Before Field 1</span>
+    <h2 class="claim-heading">Describe the <em>situation</em></h2>
+    <p class="claim-hint">e.g. "The custody exchange tonight." &nbsp;·&nbsp; "Meeting where my manager took credit for my idea." &nbsp;·&nbsp; "He said he never agreed to that — but he did."</p>
+    <textarea class="claim-input" id="claim" rows="2" placeholder="Describe what just happened — who, where, when..." oninput="updateProgress()"></textarea>
+  </div>
+
+  <!-- FIELD 1 -->
+  <div class="step visible" id="step-1">
+    <div class="step-header" onclick="toggleStep(1)">
+      <div class="step-num-col"><div class="step-num">1</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Observation · The Facts</div>
+        <div class="step-title">What would a silent camera <em>see?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">Write only what a camera would record. No adjectives about character, intent, or emotion — just observable facts.</p>
+      <p class="step-prompt">e.g. "He arrived at 6:15 PM." Not "He was late and disrespectful."</p>
+      <div class="step-action">→ Write 2–3 concrete, camera-level observations.</div>
+      <textarea class="step-textarea" id="ans-1" rows="3" placeholder="He/she/they arrived at ___ · Said the words ___ · Did ___" oninput="updateProgress(); checkStepComplete(1)"></textarea>
+      <button class="step-next" onclick="nextStep(1)">Next field →</button>
+    </div></div>
+  </div>
+
+  <!-- FIELD 2 -->
+  <div class="step visible" id="step-2">
+    <div class="step-header" onclick="toggleStep(2)">
+      <div class="step-num-col"><div class="step-num">2</div></div>
+      <div class="step-meta">
+        <div class="step-domain">Interior · Your Intent</div>
+        <div class="step-title">What was <em>your goal</em> in this moment?
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">What were you trying to achieve, protect, or avoid? This is your honest interior — not what you said out loud.</p>
+      <p class="step-prompt">e.g. "I wanted to keep the exchange under 2 minutes to avoid escalation." &nbsp;·&nbsp; "I was trying to hold the boundary we agreed on."</p>
+      <div class="step-action">→ One sentence. Be honest with yourself.</div>
+      <textarea class="step-textarea" id="ans-2" rows="2" placeholder="My goal was to..." oninput="updateProgress(); checkStepComplete(2)"></textarea>
+      <button class="step-next" onclick="nextStep(2)">Next field →</button>
+    </div></div>
+  </div>
+
+  <!-- FIELD 3 -->
+  <div class="step visible" id="step-3">
+    <div class="step-header" onclick="toggleStep(3)">
+      <div class="step-num-col"><div class="step-num">3</div></div>
+      <div class="step-meta">
+        <div class="step-domain">The Frame · Context</div>
+        <div class="step-title">What was the <em>environment?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">Context matters for credibility. What was the setting, time, weather, who else was present, emotional temperature?</p>
+      <p class="step-prompt">e.g. "It was raining. The kids were crying. Exchange was at the agreed location." &nbsp;·&nbsp; "Office, 3pm, door open, two colleagues present."</p>
+      <div class="step-action">→ Describe the scene in 1–3 sentences.</div>
+      <textarea class="step-textarea" id="ans-3" rows="2" placeholder="Location, time, who was present, conditions..." oninput="updateProgress(); checkStepComplete(3)"></textarea>
+      <button class="step-next" onclick="nextStep(3)">Next field →</button>
+    </div></div>
+  </div>
+
+  <!-- FIELD 4 -->
+  <div class="step visible" id="step-4">
+    <div class="step-header" onclick="toggleStep(4)">
+      <div class="step-num-col"><div class="step-num">4</div></div>
+      <div class="step-meta">
+        <div class="step-domain">The Record · Evidence</div>
+        <div class="step-title">What exists <em>outside your head?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">What verifiable evidence exists? Texts, emails, photos, receipts, witnesses, voicemails, timestamps, agreements in writing.</p>
+      <p class="step-prompt">e.g. "Text sent at 6:00 PM confirming pickup time. Neighbor saw the car arrive."</p>
+      <div class="step-action">→ List everything. If nothing exists, note that too.</div>
+      <div class="choice-row">
+        <button class="choice-btn" id="c4-texts" onclick="selectChoice(4,'texts')">Texts/Email</button>
+        <button class="choice-btn" id="c4-witness" onclick="selectChoice(4,'witness')">Witness</button>
+        <button class="choice-btn" id="c4-photos" onclick="selectChoice(4,'photos')">Photos/Video</button>
+        <button class="choice-btn" id="c4-none" onclick="selectChoice(4,'none')">None yet</button>
+      </div>
+      <textarea class="step-textarea" id="ans-4" rows="2" placeholder="Evidence that exists outside my memory..." oninput="updateProgress(); checkStepComplete(4)"></textarea>
+      <button class="step-next" onclick="nextStep(4)">Next field →</button>
+    </div></div>
+  </div>
+
+  <!-- FIELD 5 -->
+  <div class="step visible" id="step-5">
+    <div class="step-header" onclick="toggleStep(5)">
+      <div class="step-num-col"><div class="step-num">5</div></div>
+      <div class="step-meta">
+        <div class="step-domain">The Mirror · Their View</div>
+        <div class="step-title">What do they <em>claim happened?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">What is the other person's account, stated or implied? Write it as fairly as you can — not to validate it, but to document the gap between accounts.</p>
+      <p class="step-prompt">e.g. "They likely believe I am being rigid about the schedule." &nbsp;·&nbsp; "They stated I was aggressive — I was not."</p>
+      <div class="step-action">→ Describe their version. Fair witness to their claim.</div>
+      <textarea class="step-textarea" id="ans-5" rows="2" placeholder="Their account or likely interpretation is..." oninput="updateProgress(); checkStepComplete(5)"></textarea>
+      <button class="step-next" onclick="nextStep(5)">Next field →</button>
+    </div></div>
+  </div>
+
+  <!-- FIELD 6 -->
+  <div class="step visible" id="step-6">
+    <div class="step-header" onclick="toggleStep(6)">
+      <div class="step-num-col"><div class="step-num">6</div></div>
+      <div class="step-meta">
+        <div class="step-domain">The Sync · Resolution or Status</div>
+        <div class="step-title">What was the outcome or <em>current status?</em>
+          <span class="step-chevron">▼</span><span class="step-check">✓ done</span>
+        </div>
+      </div>
+    </div>
+    <div class="step-body" onclick="event.stopPropagation()"><div class="step-body-inner">
+      <p class="step-question">Was anything agreed, resolved, or decided? Or is this unresolved — and if so, what is the next step?</p>
+      <p class="step-prompt">e.g. "We agreed to move exchanges to the grocery store parking lot next time." &nbsp;·&nbsp; "Unresolved. I am documenting this as a pattern."</p>
+      <div class="step-action">→ State the outcome clearly. If unresolved, say so.</div>
+      <div class="choice-row">
+        <button class="choice-btn" id="c6-resolved" onclick="selectChoice(6,'resolved')">Resolved</button>
+        <button class="choice-btn" id="c6-partial" onclick="selectChoice(6,'partial')">Partial</button>
+        <button class="choice-btn" id="c6-unresolved" onclick="selectChoice(6,'unresolved')">Unresolved</button>
+        <button class="choice-btn" id="c6-pattern" onclick="selectChoice(6,'pattern')">Documenting pattern</button>
+      </div>
+      <textarea class="step-textarea" id="ans-6" rows="2" placeholder="The outcome or current status is..." oninput="updateProgress(); checkStepComplete(6)"></textarea>
+      <button class="step-next" onclick="completeSteps()">See my record →</button>
+    </div></div>
+  </div>
+
+  <!-- REFLECTION -->
+  <div class="reflection" id="reflection">
+    <h2 class="reflection-heading">Your <em>Record</em></h2>
+    <p class="reflection-sub">This is your timestamped record. Download it. Keep it.</p>
+    <div class="refl-item">
+      <span class="refl-label">01 · What is the single most important fact in this record?</span>
+      <textarea class="refl-textarea" id="refl-1" rows="2" placeholder="The key fact that matters most is..." oninput="updateProgress()"></textarea>
+    </div>
+    <div class="refl-item">
+      <span class="refl-label">02 · Do I want to return to this?</span>
+      <textarea class="refl-textarea" id="refl-2" rows="2" placeholder="Next step: file it, share it, follow up, or monitor for recurrence..." oninput="updateProgress()"></textarea>
+    </div>
+    <div class="refl-item">
+      <span class="refl-label">03 · If I talk to someone, who feels safe?</span>
+      <textarea class="refl-textarea" id="refl-3" rows="2" placeholder="Is this a one-off event or part of a recurring pattern?..." oninput="updateProgress()"></textarea>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <div class="download-section" id="downloadSection">
+    <div class="dl-label">Session Complete</div>
+    <h3 class="dl-heading">Save your Reality Check</h3>
+    <p class="dl-sub">Your answers exist only in this browser tab. Download now to preserve them — the file includes a timestamp, making it a contemporaneous record of your reality as it happened.</p>
+    <div class="dl-actions">
+      <button class="btn-gold" onclick="downloadSession()">Download as Text ↓</button>
+      <button class="btn-ghost-sm" onclick="window.print()">Print / Save PDF</button>
+      <button class="btn-ghost-sm" onclick="startOver()">Start Over</button>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing" id="closing">
+    <p class="closing-quote">"Write it down while it's still fresh. The timestamp is the whole point."</p>
+    <p class="closing-body">Free to share · aquariuos.com/reality-check · Your answers never leave this device.</p>
+  </div>
+
+</div><!-- /form-wrap -->
+
+<!-- WHAT WE'RE BUILDING NEXT -->
+<section class="next-section">
+  <div class="next-inner">
+
+    <span class="next-label">The Bigger Picture · Where This Leads</span>
+    <h2 class="next-heading">This form is a seed.<br><em>Here is what it grows into.</em></h2>
+    <p class="next-body">The six fields you just completed are the first layer of <strong>AquariuOS</strong> — an architecture for shared reality. Each field maps to a Coherence Marker: a structured dimension of how humans perceive and record what happens to them. Right now you did this alone, in your head, on one device. But the framework is designed to scale.<br><br>If two people in a dispute both complete a Reality Check on the same event, you get two structured accounts of the same moment — with timestamps, value declarations, pattern histories, and explicit action records. That is the beginning of a system that can help people understand each other, mediate conflict, and produce records that hold up under pressure. <strong>The pilot program below is how we find out whether that works in practice.</strong></p>
+
+    <div class="next-steps-grid">
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 01</span>
+        <div class="next-step-title">The <em>Reality Check</em></div>
+        <div class="next-step-body">One person. One event. Six structured fields. Timestamped. Private. The seed of everything else.</div>
+        <span class="next-step-status status-live">Live now</span>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 02</span>
+        <div class="next-step-title">The <em>Journal</em></div>
+        <div class="next-step-body">Multiple sessions over time. Pattern tracking. Trajectory view. See whether the same trigger keeps appearing — and whether your actions are working.</div>
+        <span class="next-step-status status-next">Pilot phase</span>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 03</span>
+        <div class="next-step-title">The <em>Shared Record</em></div>
+        <div class="next-step-body">Two people. Same event. Both complete a check independently. The system surfaces where accounts align, where they diverge, and why.</div>
+        <span class="next-step-status status-later">Architecture stage</span>
+      </div>
+      <div class="next-step-card">
+        <span class="next-step-num">Layer 04</span>
+        <div class="next-step-title">The <em>Witness System</em></div>
+        <div class="next-step-body">A trust layer that can hold disputed records, surface patterns across communities, and produce evidence that holds under legal and social scrutiny.</div>
+        <span class="next-step-status status-later">Architecture stage</span>
+      </div>
+    </div>
+
+    <!-- PILOT FEEDBACK FORM -->
+    <div class="pilot-block">
+      <span class="pilot-label">Pilot Program · Tell Us What Happened</span>
+      <h3 class="pilot-heading">Did this work for you?</h3>
+      <p class="pilot-sub">We are not a company. We are not collecting data to sell. We are trying to find out whether this framework actually helps real people in real situations — or whether it needs to change. If you used this check in a genuine situation, your answer matters more than any metric we could track.</p>
+
+      <div class="pilot-questions">
+        <div>
+          <span class="pilot-q-label">01 · What situation did you use this for?</span>
+          <textarea class="pilot-textarea" id="pilot-situation" rows="2" placeholder="You don't have to be specific. 'Workplace conflict' or 'relationship dispute' or 'just a bad week' is enough."></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">02 · Did it create clarity? What changed?</span>
+          <textarea class="pilot-textarea" id="pilot-clarity" rows="3" placeholder="Did anything shift — in how you saw the situation, or in what you did next? Or did it not help at all? Both answers are useful."></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">03 · Did you take the action you identified in Step 6?</span>
+          <textarea class="pilot-textarea" id="pilot-action" rows="2" placeholder="Yes / No / Not yet — and if not, what got in the way?"></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">04 · Would you use this again? Would you show it to someone?</span>
+          <textarea class="pilot-textarea" id="pilot-again" rows="2" placeholder="Honest answer only. We'd rather know it doesn't work than believe it does when it doesn't."></textarea>
+        </div>
+        <div>
+          <span class="pilot-q-label">05 · Contact (optional — only if you want a response)</span>
+          <input class="pilot-input" id="pilot-contact" type="text" placeholder="Email or any way to reach you. Never shared, never stored beyond this project.">
+        </div>
+      </div>
+
+      <button class="pilot-submit" onclick="submitPilot()">Send This →</button>
+      <div class="pilot-confirm" id="pilotConfirm">Received. Thank you — this genuinely matters.</div>
+      <p class="pilot-note">Your responses are sent to the project team only. No accounts. No tracking. No third-party services. If you'd rather not submit a form, you can email directly: aquariuosity [at] gmail.com</p>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">AquariuOS · Project 2222 · Your answers never leave this device</div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="aquariuos.html">Full Architecture</a></li>
+    <li><a href="reality-check.pdf" download>Print PDF</a></li>
+    <li><a href="AquariuOS_Alpha_V1_03_0227.pdf" download>Download Document</a></li>
+  </ul>
+</footer>
+
+<script>
+const state = {
+  activeStep: null,
+  completedSteps: new Set(),
+  choices: { 3: null, 5: null },
+  resolution: null,
+
+  started: false,
+};
+
+function showExample(id, el) {
+  var data    = document.getElementById('exdata-' + id);
+  var display = document.getElementById('exampleDisplay');
+  if (data && display) { display.innerHTML = data.innerHTML; }
+  var tabs = document.querySelectorAll('.ex-tab');
+  for (var j = 0; j < tabs.length; j++) { tabs[j].classList.remove('active'); }
+  if (el) { el.classList.add('active'); }
+}
+
+function startCheck() {
+  document.getElementById('formWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!state.started) {
+    state.started = true;
+    setTimeout(function() {
+      var s = document.getElementById('step-1');
+      s.classList.add('active');
+      state.activeStep = 1;
+    }, 600);
+  }
+}
+
+function toggleStep(num) {
+  state.activeStep === num ? closeStep(num) : openStep(num);
+}
+
+function openStep(num) {
+  if (state.activeStep !== null) closeStep(state.activeStep);
+  state.activeStep = num;
+  document.getElementById('step-' + num).classList.add('active');
+  setTimeout(function() {
+    document.getElementById('step-' + num).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 60);
+}
+
+function closeStep(num) {
+  document.getElementById('step-' + num).classList.remove('active');
+  if (state.activeStep === num) state.activeStep = null;
+}
+
+function nextStep(num) {
+  markComplete(num);
+  if (num < 6) openStep(num + 1);
+  else { completeSteps(); }
+}
+
+function markComplete(num) {
+  state.completedSteps.add(num);
+  document.getElementById('step-' + num).classList.add('completed');
+  updateProgress();
+}
+
+function checkStepComplete(num) {
+  var val = document.getElementById('ans-' + num).value.trim();
+  if (val.length > 4) markComplete(num);
+}
+
+function selectChoice(step, value) {
+  state.choices[step] = value;
+  var prefix = 'c' + step + '-';
+  document.querySelectorAll('[id^="' + prefix + '"]').forEach(function(btn) {
+    btn.classList.toggle('selected', btn.id === prefix + value);
+  });
+  markComplete(step);
+}
+
+function toggleValue(val) {
+  document.querySelectorAll('.value-tag').forEach(function(btn) {
+    if (btn.textContent.toLowerCase() === val) {
+      if (state.values.has(val)) { state.values.delete(val); btn.classList.remove('selected'); }
+      else { state.values.add(val); btn.classList.add('selected'); }
+    }
+  });
+  updateProgress();
+}
+
+function selectResolution(val) {
+  state.resolution = val;
+}
+
+function updateProgress() {
+  var filled = 0;
+  var total = 10; // claim + 6 fields + 3 reflection questions
+  if (document.getElementById('claim').value.trim().length > 3) filled++;
+  for (var i = 1; i <= 6; i++) {
+    var ta = document.getElementById('ans-' + i);
+    if (ta && ta.value.trim().length > 3) filled++;
+  }
+  for (var j = 1; j <= 3; j++) {
+    var tr = document.getElementById('refl-' + j);
+    if (tr && tr.value.trim().length > 3) filled++;
+  }
+  var pct = Math.min(100, Math.round((filled / total) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function completeSteps() {
+  markComplete(6);
+  var ref = document.getElementById('reflection');
+  ref.classList.add('visible');
+  setTimeout(function() { ref.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+  setTimeout(function() {
+    document.getElementById('downloadSection').classList.add('visible');
+    document.getElementById('closing').classList.add('visible');
+  }, 900);
+}
+
+function downloadSession() {
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  var timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
+  var isoStr = now.toISOString();
+  var g = function(id) {
+    var el = document.getElementById(id);
+    return el ? (el.value.trim() || '\u2014') : '\u2014';
+  };
+  var line = '\u2500'.repeat(50);
+  var closingQuote = 'This record was created at the time shown above. It reflects your account of events as you experienced them.';
+  var text = [
+    'REALITY CHECK · SIX-FIELD LOG',
+    'AquariuOS \u00b7 Project 2222',
+    'Date: ' + dateStr,
+    'Time: ' + timeStr,
+    'ISO Timestamp: ' + isoStr,
+    '(This timestamp documents when this record was created.)',
+    line, '',
+    'SITUATION / INITIAL DESCRIPTION',
+    g('claim'), '',
+    line,
+    'FIELD 1 \u00b7 OBSERVATION \u2014 The Facts (camera-level)',
+    g('ans-1'), '',
+    'FIELD 2 \u00b7 INTERIOR \u2014 Your Intent',
+    g('ans-2'), '',
+    'FIELD 3 \u00b7 THE FRAME \u2014 Context',
+    g('ans-3'), '',
+    'FIELD 4 \u00b7 THE RECORD \u2014 Evidence',
+    'Evidence type: ' + (state.choices[4] || '\u2014').toUpperCase(),
+    g('ans-4'), '',
+    'FIELD 5 \u00b7 THE MIRROR \u2014 Their View',
+    g('ans-5'), '',
+    'FIELD 6 \u00b7 THE SYNC \u2014 Resolution / Status',
+    'Status: ' + (state.choices[6] || '\u2014').toUpperCase(),
+    g('ans-6'), '',
+    line,
+    'NOTES / NEXT STEPS', '',
+    'What shifted for me:', g('refl-1'), '',
+    'Do I want to return to this:', g('refl-2'), '',
+    'If I talk to someone, who feels safe:', g('refl-3'), '',
+    line,
+    closingQuote, '',
+    'aquariuos.com/reality-check \u00b7 Your answers were never sent anywhere.',
+    'Keep this file. The timestamp is contemporaneous evidence of your reality as it happened.',
+  ].join('\n');
+
+  var blob = new Blob([text], { type: 'text/plain' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'reality-check-' + isoStr.slice(0,10) + '.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function startOver() {
+  if (!confirm('Start a new session? Your current answers will be cleared.')) return;
+  document.querySelectorAll('textarea').forEach(function(t) { t.value = ''; });
+  document.querySelectorAll('.choice-btn, .value-tag, .impact-btn').forEach(function(b) { b.classList.remove('selected'); });
+  state.completedSteps = new Set();
+  state.choices = { 3: null, 5: null };
+  state.impact = null;
+  state.values = new Set();
+  state.activeStep = null;
+  for (var i = 1; i <= 7; i++) {
+    var s = document.getElementById('step-' + i);
+    if (s) s.classList.remove('active','completed');
+  }
+  ['reflection','downloadSection','closing'].forEach(function(id) {
+    document.getElementById(id).classList.remove('visible');
+  });
+  document.getElementById('progressFill').style.width = '0%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(function() { openStep(1); }, 500);
+}
+
+function submitPilot() {
+  var situation = document.getElementById('pilot-situation').value.trim();
+  var clarity   = document.getElementById('pilot-clarity').value.trim();
+  var action    = document.getElementById('pilot-action').value.trim();
+  var again     = document.getElementById('pilot-again').value.trim();
+  var contact   = document.getElementById('pilot-contact').value.trim();
+
+  if (!situation && !clarity) {
+    alert('Please share at least something — even one sentence helps.');
+    return;
+  }
+
+  // Build mailto as fallback (no backend needed)
+  var body = [
+    'AQUARIUOS PILOT FEEDBACK',
+    '========================', '',
+    '01 Situation: ' + (situation || '—'), '',
+    '02 Clarity / What changed: ' + (clarity || '—'), '',
+    '03 Took the action (Step 6): ' + (action || '—'), '',
+    '04 Would use again / show to someone: ' + (again || '\u2014'), '',
+    '05 Contact: ' + (contact || 'not provided'),
+  ].join('\n');
+
+  var mailto = 'mailto:aquariuosity@gmail.com'
+    + '?subject=' + encodeURIComponent('AquariuOS Pilot Feedback')
+    + '&body=' + encodeURIComponent(body);
+
+  window.location.href = mailto;
+
+  document.getElementById('pilotConfirm').style.display = 'block';
+  document.querySelector('.pilot-submit').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
