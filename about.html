@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Origin — AquariuOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #080f18;
+    --mist:       #0b1520;
+    --mist2:      #0e1d2e;
+    --teal:       #4ecdc4;
+    --gold:       #c9a84c;
+    --gold-light: #e2c47a;
+    --white:      #f4f0e8;
+    --pale:       #ccc8be;
+    --silver:     #8a9ab0;
+    --slate:      #4a5568;
+    --border:     rgba(255,255,255,0.07);
+    --serif:      'Cormorant Garamond', Georgia, serif;
+    --sans:       'Outfit', sans-serif;
+    --mono:       'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #080f18;
+    color: #ccc8be;
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+
+  /* ════ UNIVERSAL NAV ════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 58px;
+    background: rgba(8,15,24,0.95);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem; font-weight: 300;
+    color: #f4f0e8; text-decoration: none;
+    letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0;
+  }
+  .nav-logo span { font-style: italic; color: #8a9ab0; font-size: 0.82rem; }
+  .nav-links {
+    display: flex; align-items: center; gap: 0.15rem;
+    list-style: none; margin: 0; padding: 0;
+  }
+  .nav-links li { position: relative; }
+  .nav-links a, .nav-links button.nav-dropdown-toggle {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #8a9ab0; text-decoration: none;
+    padding: 0.4rem 0.72rem; border-radius: 3px;
+    transition: color 0.18s, background 0.18s;
+    display: block; white-space: nowrap;
+    background: none; border: none; cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links button.nav-dropdown-toggle:hover { color: #f4f0e8; }
+  .nav-links a.active { color: #4ecdc4; }
+  .nav-links .nav-steward {
+    color: #4ecdc4 !important;
+    border: 1px solid rgba(78,205,196,0.4) !important;
+    padding: 0.38rem 0.85rem !important;
+    border-radius: 4px !important;
+    margin-left: 0.4rem;
+  }
+  .nav-links .nav-steward:hover {
+    background: rgba(78,205,196,0.1) !important;
+    border-color: #4ecdc4 !important;
+  }
+  /* Dropdown */
+  .nav-dropdown-menu {
+    display: none; position: absolute; top: calc(100% + 6px); left: 0;
+    background: #0b1520; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 0.35rem 0; list-style: none;
+    min-width: 160px; z-index: 300;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu li a {
+    display: block; padding: 0.5rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #8a9ab0; text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-dropdown-menu li a:hover { color: #f4f0e8; background: rgba(255,255,255,0.04); }
+  /* Hamburger */
+  .hamburger {
+    display: none; background: none; border: none;
+    color: #8a9ab0; font-size: 1.3rem; cursor: pointer;
+    padding: 0.4rem; line-height: 1; transition: color 0.18s;
+  }
+  .hamburger:hover { color: #f4f0e8; }
+  /* Mobile menu */
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 58px; left: 0; right: 0;
+    background: #080f18;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 0.75rem 1.5rem 1.25rem;
+    flex-direction: column; z-index: 199;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #8a9ab0; text-decoration: none;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.15s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: #4ecdc4; }
+  .mobile-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #4a5568; padding: 0.9rem 0 0.2rem; display: block;
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: block; }
+  }
+
+
+  /* ── HERO ── */
+  .hero {
+    padding: 9rem 2.5rem 5rem;
+    max-width: 760px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-label {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #4ecdc4; margin-bottom: 1.2rem;
+    opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
+  }
+  .hero-name {
+    font-family: var(--serif); font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 300; color: #f4f0e8; line-height: 1.1;
+    margin-bottom: 0.4rem;
+    opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .hero-role {
+    font-family: var(--serif); font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-style: italic; color: #e2c47a; margin-bottom: 1.8rem;
+    opacity: 0; animation: fadeUp 0.6s 0.3s forwards;
+  }
+  .hero-lede {
+    font-size: 1.08rem; color: #8a9ab0; line-height: 1.82;
+    max-width: 580px; border-left: 2px solid rgba(78,205,196,0.3);
+    padding-left: 1.4rem;
+    opacity: 0; animation: fadeUp 0.6s 0.45s forwards;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    max-width: 760px; margin: 0 auto;
+    padding: 5rem 2.5rem 6rem;
+    position: relative;
+  }
+  /* vertical rule */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: calc(2.5rem + 38px);
+    top: 5rem; bottom: 6rem;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(78,205,196,0.2) 8%,
+      rgba(78,205,196,0.15) 88%,
+      transparent
+    );
+  }
+
+  .tl-entry {
+    display: grid;
+    grid-template-columns: 76px 1fr;
+    gap: 0 2rem;
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .tl-entry.visible { opacity: 1; transform: none; }
+
+  .tl-left {
+    display: flex; flex-direction: column;
+    align-items: center; padding-top: 0.3rem;
+  }
+  .tl-year {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.1em; color: #4ecdc4;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+  .tl-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 1px solid rgba(78,205,196,0.5);
+    background: #080f18;
+    flex-shrink: 0;
+    margin-top: 0.4rem;
+    position: relative; z-index: 1;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .tl-entry.visible .tl-dot {
+    background: rgba(78,205,196,0.2);
+    border-color: #4ecdc4;
+  }
+
+  .tl-right { padding-top: 0.15rem; }
+
+  .tl-chapter {
+    font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: #4a5568; margin-bottom: 0.5rem;
+  }
+  .tl-heading {
+    font-family: var(--serif); font-size: 1.45rem;
+    font-weight: 300; color: #f4f0e8;
+    line-height: 1.25; margin-bottom: 0.9rem;
+  }
+  .tl-heading em { font-style: italic; color: #e2c47a; }
+  .tl-body {
+    font-size: 0.97rem; color: #ccc8be;
+    line-height: 1.82;
+  }
+  .tl-body p { margin-bottom: 0.85rem; }
+  .tl-body p:last-child { margin-bottom: 0; }
+  .tl-body strong { color: #f4f0e8; font-weight: 400; }
+
+  /* ── CLOSING ── */
+  .closing {
+    max-width: 760px; margin: 0 auto;
+    padding: 3rem 2.5rem 6rem;
+    border-top: 1px solid var(--border);
+  }
+  .closing-quote {
+    font-family: var(--serif); font-size: clamp(1.3rem, 3.5vw, 2rem);
+    font-weight: 300; font-style: italic;
+    color: #f4f0e8; line-height: 1.45;
+    max-width: 620px; margin-bottom: 2rem;
+  }
+  .closing-quote em { color: #e2c47a; }
+  .closing-body {
+    font-size: 0.95rem; color: #8a9ab0;
+    line-height: 1.75; max-width: 520px;
+    margin-bottom: 2.5rem;
+  }
+  .closing-links {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .closing-link {
+    font-family: var(--mono); font-size: 0.62rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; padding: 0.6rem 1.2rem;
+    border-radius: 3px; transition: all 0.18s;
+  }
+  .link-primary {
+    background: var(--teal); color: #080f18;
+  }
+  .link-primary:hover { background: #3ab5ac; }
+  .link-ghost {
+    border: 1px solid rgba(255,255,255,0.15); color: #8a9ab0;
+  }
+  .link-ghost:hover { border-color: #4ecdc4; color: #4ecdc4; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.1em; color: #4a5568;
+  }
+  footer a { color: #4a5568; text-decoration: none; }
+  footer a:hover { color: #4ecdc4; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-link { display: none; }
+    .hero { padding: 7rem 1.3rem 3.5rem; }
+    .timeline { padding: 3rem 1.3rem 4rem; }
+    .timeline::before { left: calc(1.3rem + 38px); }
+    .closing { padding: 2.5rem 1.3rem 4rem; }
+    .tl-heading { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">AquariuOS <span>/ Project 2222</span></a>
+  <ul class="nav-links">
+    <li><a href="/" class="nav-link">Architecture</a></li>
+    <li class="nav-dropdown">
+      <button class="nav-dropdown-toggle">Tools &#9662;</button>
+      <ul class="nav-dropdown-menu">
+        <li><a href="/reality-check">Reality Check</a></li>
+        <li><a href="/journal">Journal</a></li>
+      </ul>
+    </li>
+    <li><a href="/community" class="nav-link">Community</a></li>
+    <li><a href="/about" class="nav-link active">Origin</a></li>
+    <li><a href="/ask" class="nav-steward">Ask the Steward &#9675;</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="/">Architecture</a>
+    <span class="mobile-section-label">Tools</span>
+    <a href="/reality-check">Reality Check</a>
+    <a href="/journal">Journal</a>
+    <a href="/community">Community</a>
+    <a href="/about" class="active">Origin</a>
+    
+    <a href="/ask" class="active" style="color:#4ecdc4!important;border-top:1px solid rgba(78,205,196,0.2);margin-top:0.4rem;">Ask the Steward &#9675;</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Origin Story · Efren Pardilla</div>
+  <div class="hero-name">I built this.</div>
+  <div class="hero-role">Here is why.</div>
+  <p class="hero-lede">AquariuOS was not designed in a research lab or funded by a foundation. I built it over seventeen years — in notes apps, in Twitter threads, in thousands of pages of conversation with AI systems — because the world kept failing to document what was actually happening, and I had to start designing a better way.</p>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline">
+
+  <div class="tl-entry">
+    <div class="tl-left">
+      <div class="tl-year">2008</div>
+      <div class="tl-dot"></div>
+    </div>
+    <div class="tl-right">
+      <div class="tl-chapter">Chapter One · The Word</div>
+      <h2 class="tl-heading">The war was over a <em>word.</em></h2>
+      <div class="tl-body">
+        <p>When Proposition 8 passed in California in 2008 — outlawing same-sex marriage — the argument made by religious communities was that they were exercising religious freedom. I saw this differently. If religious freedom permitted some communities to practice marriage as a sacred institution, the same freedom extended to all communities. I responded by conceptualizing a church for LGBTQIA+ people, people of color, and their allies — one where we, too, could practice loving each other in committed, traditional marriages.</p>
+        <p>The conflict, I understood, was never really about rights or theology. <strong>It was about who owned the word.</strong> Which side got to define what marriage meant. That question — who controls the language of reality — became a thread I would pull on for the next seventeen years.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-entry">
+    <div class="tl-left">
+      <div class="tl-year">2016</div>
+      <div class="tl-dot"></div>
+    </div>
+    <div class="tl-right">
+      <div class="tl-chapter">Chapter Two · The Accounts</div>
+      <h2 class="tl-heading">Three voices using <em>scripture as evidence.</em></h2>
+      <div class="tl-body">
+        <p>As the Trump era began, I became active on Twitter. I created three accounts I called the AquariuOSities — each one using scripture to document and challenge what I saw as moral contradictions in the public record. It was an early experiment in a method I would later formalize: using structured language to establish what had actually been said, promised, and done.</p>
+        <p>During this era I watched my world fracture and break in half. Shared Reality was being torn apart in real time — not slowly, but visibly, in front of everyone. My family split into two groups. So did my friendships — many of which I lost entirely. People dug their heels in. Echo chambers were built and reinforced. "Alternative facts" became a phrase that entered the public vocabulary without irony. And then <strong>"facts" became the new word people were warring over</strong> — the same way "marriage" had been a decade before. I recognized the pattern. Someone was fighting to control the language of reality again.</p>
+        <p>Twitter banned me. I went inward. The experiment ended, but the underlying question deepened: <strong>what happens when the record gets erased?</strong> Who holds the truth when the platform decides you don't?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-entry">
+    <div class="tl-left">
+      <div class="tl-year">2020</div>
+      <div class="tl-dot"></div>
+    </div>
+    <div class="tl-right">
+      <div class="tl-chapter">Chapter Three · The Insight</div>
+      <h2 class="tl-heading">George Floyd, and the <em>camera that wasn't there.</em></h2>
+      <div class="tl-body">
+        <p>When George Floyd was murdered in May 2020, I had a thought I couldn't let go: <strong>if everyone present had an internet-connected camera, George Floyd would probably have lived.</strong> With multiple independent perspectives of the same event, there would have been no viable dispute of what happened. The record would have been undeniable before anyone had the chance to construct an alternative one.</p>
+        <p>This became the seed of Shared Reality — the idea that the problem was not a lack of truth, but a lack of simultaneous, corroborated documentation of it. A single camera can be dismissed. Sixteen cannot.</p>
+        <p>The insight came partly from my work as a professional editor in television and independent film. In Avid and Premiere, multi-cam mode lets you see a quad split or sixteen-way split of footage from multiple cameras simultaneously — the same event, from every angle, in the same frame. I began to imagine what it would mean to apply that logic to lived experience. <strong>What if ordinary people had the infrastructure to hold the same split-view of contested reality?</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-entry">
+    <div class="tl-left">
+      <div class="tl-year">2020–24</div>
+      <div class="tl-dot"></div>
+    </div>
+    <div class="tl-right">
+      <div class="tl-chapter">Chapter Four · The Notes</div>
+      <h2 class="tl-heading">A wishlist for technology <em>that cared.</em></h2>
+      <div class="tl-body">
+        <p>For four years, I wrote. Not a book — notes. Fragments in my phone's notes app, accumulated late at night, returning to the same questions from different angles. I built a wishlist: what would technology look like if it were designed around human dignity instead of engagement? What would it refuse to do? What would it protect?</p>
+        <p>I was not designing a product. I was designing a set of constraints — the negative space of what ethical infrastructure would have to look like if it were ever to exist. The architecture grew around those refusals.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-entry">
+    <div class="tl-left">
+      <div class="tl-year">2025</div>
+      <div class="tl-dot"></div>
+    </div>
+    <div class="tl-right">
+      <div class="tl-chapter">Chapter Five · The Recursion</div>
+      <h2 class="tl-heading">1,200 pages, written <em>with machines.</em></h2>
+      <div class="tl-body">
+        <p>In 2025, I fed my years of notes into ChatGPT and began a recursive process — conversation building on conversation, each exchange expanding and refining the framework. The AI became a collaborator and a mirror: something to think against, to test ideas with, to push until the structure became coherent. Gemini and Claude joined the conversation. The sessions became chapters.</p>
+        <p>By the end of 2025, I had 1,200 pages — a sprawling tome written in the register of science fiction, framed as a message sent from the year 2222 AD, containing a blueprint for restoring Shared Reality. The future writing to the present about what we had failed to build and what we still could.</p>
+        <p><strong>I am aware of the irony.</strong> Using AI systems — the very technology most in need of governance — to design a framework for governing AI. I consider it a feature, not a contradiction. The systems helped me think. They did not replace my judgment. Every refusal in the architecture, every limit built into the design, came from me — a human who had watched what happens when there are none.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tl-entry">
+    <div class="tl-left">
+      <div class="tl-year">2026</div>
+      <div class="tl-dot"></div>
+    </div>
+    <div class="tl-right">
+      <div class="tl-chapter">Chapter Six · The Release</div>
+      <h2 class="tl-heading">1,200 pages became <em>225.</em> Then a website. <em>Then this.</em></h2>
+      <div class="tl-body">
+        <p>In January 2026, I rewrote the entire work. I stripped the science fiction scaffolding and wrote the architecture directly — what the system is, how it works, what it refuses to do, and why. 1,200 pages became 225. On February 4, 2026, I published and released it online.</p>
+        <p>On February 20, 2026, I launched the website. The tools followed: the Reality Check, the Journal, the Steward. None of it is finished. All of it is real and in use.</p>
+        <p>I am not a technologist, a researcher, or an institution. <strong>I am a witness who got tired of watching reality get contested without infrastructure.</strong> So I built the infrastructure.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /timeline -->
+
+<!-- CLOSING -->
+<div class="closing">
+  <p class="closing-quote">I am not a credential. I am a <em>record.</em></p>
+  <p class="closing-body">AquariuOS asks nothing of your trust except that you try the tools. The Reality Check works or it doesn't. The Journal holds your entries or it doesn't. The framework helps you see more clearly or it doesn't. I offer this origin not as authority, but as context — so you know where this came from, and why it is the shape that it is.</p>
+  <div class="closing-links">
+    <a href="/reality-check" class="closing-link link-primary">Try the Reality Check →</a>
+    <a href="/" class="closing-link link-ghost">Read the Architecture</a>
+    <a href="/community" class="closing-link link-ghost">Community</a>
+  </div>
+</div>
+
+<footer>
+  <a href="/">AquariuOS</a> &nbsp;·&nbsp; Project 2222 &nbsp;·&nbsp;
+  Built by Efren Pardilla &nbsp;·&nbsp;
+  <a href="/cdn-cgi/l/email-protection#6e0f1f1b0f1c071b011d071a172e09030f0702400d0103"><span class="__cf_email__" data-cfemail="e485959185968d918b978d909da48389858d88ca878b89">[email&#160;protected]</span></a>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Intersection observer — animate timeline entries as they scroll into view
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isInters
