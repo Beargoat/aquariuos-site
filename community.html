@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community — AquariuOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #080f18;
+    --mist:      #0b1520;
+    --mist2:     #0e1d2e;
+    --teal:      #4ecdc4;
+    --gold:      #c9a84c;
+    --gold-light:#e2c47a;
+    --white:     #f4f0e8;
+    --pale:      #ccc8be;
+    --silver:    #8a9ab0;
+    --slate:     #4a5568;
+    --border:    rgba(255,255,255,0.07);
+    --serif:     'Cormorant Garamond', Georgia, serif;
+    --sans:      'Outfit', sans-serif;
+    --mono:      'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--pale);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+
+  /* ════ UNIVERSAL NAV ════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 58px;
+    background: rgba(8,15,24,0.95);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem; font-weight: 300;
+    color: #f4f0e8; text-decoration: none;
+    letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0;
+  }
+  .nav-logo span { font-style: italic; color: #8a9ab0; font-size: 0.82rem; }
+  .nav-links {
+    display: flex; align-items: center; gap: 0.15rem;
+    list-style: none; margin: 0; padding: 0;
+  }
+  .nav-links li { position: relative; }
+  .nav-links a, .nav-links button.nav-dropdown-toggle {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #8a9ab0; text-decoration: none;
+    padding: 0.4rem 0.72rem; border-radius: 3px;
+    transition: color 0.18s, background 0.18s;
+    display: block; white-space: nowrap;
+    background: none; border: none; cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links button.nav-dropdown-toggle:hover { color: #f4f0e8; }
+  .nav-links a.active { color: #4ecdc4; }
+  .nav-links .nav-steward {
+    color: #4ecdc4 !important;
+    border: 1px solid rgba(78,205,196,0.4) !important;
+    padding: 0.38rem 0.85rem !important;
+    border-radius: 4px !important;
+    margin-left: 0.4rem;
+  }
+  .nav-links .nav-steward:hover {
+    background: rgba(78,205,196,0.1) !important;
+    border-color: #4ecdc4 !important;
+  }
+  /* Dropdown */
+  .nav-dropdown-menu {
+    display: none; position: absolute; top: calc(100% + 6px); left: 0;
+    background: #0b1520; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 0.35rem 0; list-style: none;
+    min-width: 160px; z-index: 300;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  .nav-dropdown-menu li a {
+    display: block; padding: 0.5rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #8a9ab0; text-decoration: none;
+    transition: color 0.15s, background 0.15s;
+  }
+  .nav-dropdown-menu li a:hover { color: #f4f0e8; background: rgba(255,255,255,0.04); }
+  /* Hamburger */
+  .hamburger {
+    display: none; background: none; border: none;
+    color: #8a9ab0; font-size: 1.3rem; cursor: pointer;
+    padding: 0.4rem; line-height: 1; transition: color 0.18s;
+  }
+  .hamburger:hover { color: #f4f0e8; }
+  /* Mobile menu */
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 58px; left: 0; right: 0;
+    background: #080f18;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    padding: 0.75rem 1.5rem 1.25rem;
+    flex-direction: column; z-index: 199;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #8a9ab0; text-decoration: none;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.15s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover, .mobile-menu a.active { color: #4ecdc4; }
+  .mobile-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #4a5568; padding: 0.9rem 0 0.2rem; display: block;
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 1.2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: block; }
+  }
+
+
+  /* ── HERO ── */
+  .hero {
+    padding: 9rem 2.5rem 4rem;
+    max-width: 800px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-label {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 1rem;
+    opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300; color: var(--white); line-height: 1.15;
+    margin-bottom: 1.2rem;
+    opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--silver); line-height: 1.75;
+    max-width: 580px;
+    opacity: 0; animation: fadeUp 0.6s 0.35s forwards;
+  }
+
+  /* ── FEED LAYOUT ── */
+  .feed-wrap {
+    max-width: 800px; margin: 0 auto;
+    padding: 3rem 2.5rem 6rem;
+  }
+  .feed-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.6s 0.5s forwards;
+  }
+  .feed-title {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--slate);
+  }
+  .feed-count {
+    font-family: var(--mono); font-size: 0.58rem; color: var(--slate);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── POST CARD ── */
+  .post-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1.5px;
+    background: var(--mist);
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.5s forwards;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .post-card:hover { border-color: rgba(78,205,196,0.2); background: var(--mist2); }
+
+  .post-image {
+    width: 100%; aspect-ratio: 4/3;
+    object-fit: cover; object-position: center top; display: block;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-body {
+    padding: 1.6rem 1.8rem 1.4rem;
+  }
+
+  .post-meta {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-bottom: 0.7rem;
+  }
+  .post-tag {
+    font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem; border-radius: 2px;
+  }
+  .tag-Update      { background: rgba(78,205,196,0.12);  color: var(--teal);       border: 1px solid rgba(78,205,196,0.25); }
+  .tag-Tool        { background: rgba(201,168,76,0.12);  color: var(--gold-light); border: 1px solid rgba(201,168,76,0.25); }
+  .tag-Vision      { background: rgba(138,154,176,0.12); color: var(--silver);     border: 1px solid rgba(138,154,176,0.2); }
+  .tag-Introduction{ background: rgba(244,240,232,0.07); color: var(--pale);       border: 1px solid rgba(244,240,232,0.12); }
+  .tag-Milestone   { background: rgba(78,205,196,0.08);  color: var(--teal);       border: 1px solid rgba(78,205,196,0.2); }
+  .tag-Essay       { background: rgba(201,168,76,0.08);  color: var(--gold);       border: 1px solid rgba(201,168,76,0.2); }
+
+  .post-date {
+    font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.08em; color: var(--slate);
+  }
+
+  .post-title {
+    font-family: var(--serif); font-size: 1.45rem;
+    font-weight: 300; color: var(--white);
+    line-height: 1.25; margin-bottom: 0.85rem;
+  }
+
+  .post-text {
+    font-size: 0.96rem; color: var(--pale);
+    line-height: 1.78; margin-bottom: 1.2rem;
+  }
+
+  .post-actions {
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+    padding-top: 1rem; border-top: 1px solid var(--border);
+  }
+  .post-link {
+    font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; padding: 0.45rem 1rem;
+    border-radius: 3px; transition: all 0.18s;
+  }
+  .post-link-primary {
+    background: var(--teal); color: var(--ink);
+  }
+  .post-link-primary:hover { background: #3ab5ac; }
+  .post-link-reddit {
+    border: 1px solid rgba(255,255,255,0.12); color: var(--silver);
+  }
+  .post-link-reddit:hover { border-color: rgba(255,69,0,0.5); color: #ff6534; }
+
+  /* ── COMMUNITY LINKS SECTION ── */
+  .community-section {
+    max-width: 800px; margin: 0 auto;
+    padding: 3rem 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+  .community-label {
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--slate); margin-bottom: 1.5rem;
+  }
+  .community-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+  }
+  .community-link {
+    display: flex; flex-direction: column; gap: 0.2rem;
+    padding: 1rem 1.2rem;
+    background: var(--mist); border: 1px solid var(--border);
+    border-radius: 4px; text-decoration: none;
+    transition: all 0.18s;
+  }
+  .community-link:hover { border-color: rgba(78,205,196,0.3); background: var(--mist2); }
+  .community-link-name {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.08em; color: var(--teal);
+  }
+  .community-link-desc {
+    font-size: 0.82rem; color: var(--silver); line-height: 1.4;
+  }
+
+  /* ── LOADING / ERROR ── */
+  .feed-loading {
+    text-align: center; padding: 4rem 2rem;
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.12em; color: var(--slate);
+  }
+  .feed-error {
+    text-align: center; padding: 2rem;
+    font-size: 0.9rem; color: var(--slate);
+    border: 1px solid var(--border); border-radius: 4px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono); font-size: 0.58rem;
+    letter-spacing: 0.1em; color: var(--slate);
+  }
+  footer a { color: var(--slate); text-decoration: none; }
+  footer a:hover { color: var(--teal); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-link { display: none; }
+    .hero { padding: 7rem 1.3rem 3rem; }
+    .feed-wrap { padding: 2rem 1rem 5rem; }
+    .post-body { padding: 1.2rem 1.2rem 1rem; }
+    .post-title { font-size: 1.2rem; }
+    .community-section { padding: 2rem 1rem; }
+  }
+  .post-comment-count{font-family:'DM Mono',monospace;font-size:0.58rem;color:#4a5568;padding:0.45rem 0.5rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">AquariuOS <span>/ Project 2222</span></a>
+  <ul class="nav-links">
+    <li><a href="/" class="nav-link">Architecture</a></li>
+    <li class="nav-dropdown">
+      <button class="nav-dropdown-toggle">Tools &#9662;</button>
+      <ul class="nav-dropdown-menu">
+        <li><a href="/reality-check">Reality Check</a></li>
+        <li><a href="/journal">Journal</a></li>
+      </ul>
+    </li>
+    <li><a href="/community" class="nav-link active">Community</a></li>
+    <li><a href="/about" class="nav-link">Origin</a></li>
+    <li><a href="/ask" class="nav-steward">Ask the Steward &#9675;</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">&#9776;</button>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="/">Architecture</a>
+    <span class="mobile-section-label">Tools</span>
+    <a href="/reality-check">Reality Check</a>
+    <a href="/journal">Journal</a>
+    <a href="/community" class="active">Community</a>
+    <a href="/about">Origin</a>
+    
+    <a href="/ask" class="active" style="color:#4ecdc4!important;border-top:1px solid rgba(78,205,196,0.2);margin-top:0.4rem;">Ask the Steward &#9675;</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Project 2222 · Community Feed</div>
+  <h1>What we're building.<br><em>As we build it.</em></h1>
+  <p class="hero-sub">The home of an architecture for shared reality — where we discuss the structural components being built: RealityNet, the SharedReality layer, and the Councils that govern them. If you believe dignity should be the default setting of digital infrastructure, this is where that conversation lives.</p>
+  <a href="https://www.reddit.com/r/AquariuOS/" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:#4ecdc4;border:1px solid rgba(78,205,196,0.35);padding:0.6rem 1.2rem;border-radius:3px;transition:all 0.2s;" onmouseover="this.style.background='rgba(78,205,196,0.08)'" onmouseout="this.style.background='transparent'">Join r/AquariuOS &#8599;</a>
+</div>
+
+<div class="feed-wrap">
+  <div class="feed-header">
+    <span class="feed-title">Latest from r/AquariuOS</span>
+    <span class="feed-count" id="feed-count"></span>
+  </div>
+  <div id="feed-list">
+    <div class="feed-loading">Loading feed…</div>
+  </div>
+</div>
+
+<!-- COMMUNITY LINKS -->
+<div class="community-section">
+  <div class="community-label">Find us · Join the conversation</div>
+  <div class="community-grid">
+    <a href="https://www.reddit.com/r/AquariuOS/" target="_blank" class="community-link">
+      <span class="community-link-name">r/AquariuOS</span>
+      <span class="community-link-desc">The main project subreddit. Posts, questions, discussion.</span>
+    </a>
+    <a href="https://www.reddit.com/r/AI_Governance/comments/1qwzx8y/if_ai_helps_detect_institutional_capture_how_do/" target="_blank" class="community-link">
+      <span class="community-link-name">r/AI_Governance</span>
+      <span class="community-link-desc">AquariuOS thread on AI governance and institutional capture.</span>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61586947435505" target="_blank" class="community-link">
+      <span class="community-link-name">Facebook</span>
+      <span class="community-link-desc">Project page for broader reach and discussion.</span>
+    </a>
+    <a href="https://x.com/TheProject2222" target="_blank" class="community-link">
+      <span class="community-link-name">X / Twitter</span>
+      <span class="community-link-desc">@TheProject2222 — updates and conversation.</span>
+    </a>
+    <a href="https://www.instagram.com/project2222aquariuos/" target="_blank" class="community-link">
+      <span class="community-link-name">Instagram</span>
+      <span class="community-link-desc">Visual posts and project updates.</span>
+    </a>
+    <a href="https://www.threads.com/@aquariuosity" target="_blank" class="community-link">
+      <span class="community-link-name">Threads</span>
+      <span class="community-link-desc">@aquariuosity — thinking out loud.</span>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <a href="/">AquariuOS</a> &nbsp;·&nbsp; Project 2222 &nbsp;·&nbsp; Open architecture for shared reality &nbsp;·&nbsp;
+  <a href="/cdn-cgi/l/email-protection#fd9c8c889c8f9488928e948984bd9a909c9491d39e9290"><span class="__cf_email__" data-cfemail="4d2c3c382c3f2438223e2439340d2a202c2421632e2220">[email&#160;protected]</span></a>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+(function() {
+  document.querySelectorAll('.nav-dropdown-toggle').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault(); e.stopPropagation();
+      var dd = btn.closest('.nav-dropdown');
+      var wasOpen = dd.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
+      if (!wasOpen) dd.classList.add('open');
+    });
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
+    }
+  });
+  var hbg = document.getElementById('hamburger');
+  var mob = document.getElementById('mobile-menu');
+  if (hbg && mob) {
+    hbg.addEventListener('click', function() {
+      var open = mob.classList.toggle('open');
+      hbg.textContent = open ? '\u2715' : '\u2630';
+    });
+  }
+})();
+</script>
+<script>
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function formatTs(utc) {
+  return new Date(utc * 1000).toLocaleDateString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric'
+  });
+}
+
+function renderPosts(posts) {
+  var list = document.getElementById('feed-list');
+  var count = document.getElementById('feed-count');
+  if (!posts || !posts.length) {
+    list.innerHTML = '<div class="feed-error">No posts yet. <a href="https://www.reddit.com/r/AquariuOS/" target="_blank" style="color:#4ecdc4;">Visit r/AquariuOS ↗</a></div>';
+    return;
+  }
+  count.textContent = posts.length + ' post' + (posts.length !== 1 ? 's' : '');
+  list.innerHTML = posts.map(function(p, i) {
+    var date = formatTs(p.created_utc);
+    var meta = '<span class="post-date">' + date + '</span>';
+    if (p.author) meta += '<span class="post-author">by ' + escHtml(p.author) + '</span>';
+    if (p.num_comments > 0) meta += '<span class="post-author">' + p.num_comments + ' comment' + (p.num_comments !== 1 ? 's' : '') + '</span>';
+    return '<div class="post-card" style="animation-delay:' + (i * 0.07) + 's">'
+      + '<div class="post-body">'
+      + '<div class="post-meta"><span class="post-tag tag-Update">r/AquariuOS</span>' + meta + '</div>'
+      + '<div class="post-title"><a href="' + escHtml(p.url) + '" target="_blank" style="color:inherit;text-decoration:none;">' + escHtml(p.title) + '</a></div>'
+      + '<div class="post-actions"><a href="' + escHtml(p.url) + '" target="_blank" class="post-link post-link-reddit">Read on Reddit ↗</a></div>'
+      + '</div></div>';
+  }).join('');
+}
+
+
+function loadFeed() {
+  fetch('/.netlify/functions/reddit-feed')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.posts && data.posts.length > 0) {
+        renderPosts(data.posts);
+      } else {
+        // Function worked but Reddit returned nothing or an error
+        document.getElementById('feed-list').innerHTML =
+          '<div class="feed-error">No posts loaded yet — <a href="https://www.reddit.com/r/AquariuOS/" target="_blank" style="color:#4ecdc4;">read the latest on r/AquariuOS ↗</a></div>';
+        document.getElementById('feed-count').textContent = '';
+      }
+    })
+    .catch(function(err) {
+      document.getElementById('feed-list').innerHTML =
+        '<div class="feed-error">Could not reach the feed. <a href="https://www.reddit.com/r/AquariuOS/" target="_blank" style="color:#4ecdc4;">Visit r/AquariuOS directly ↗</a></div>';
+      document.getElementById('feed-count').textContent = '';
+    });
+}
+
+loadFeed();
+</script>
+</body>
+</html>
